@@ -1,0 +1,10 @@
+h2{
+    color: var(--text-color-medium);
+    font-size: 1.5rem;
+}
+hr.divider {
+    border: 0;
+    height: 1px;
+    background-color: var(--text-color-medium);
+    margin: 0.5rem 0;
+}

@@ -1,0 +1,27 @@
+.app-header {
+    background-color: var(--amber-dark);
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: fit-content;
+}
+.app-header h1{
+   font-weight: 400;
+   text-align: center;
+}
+
+@media only screen and (min-width: 600px) {
+    .app-content {
+        background-color: var(--background-color);
+    }
+}
+
+
+.scrollable-content {
+    overflow-y: auto;
+    height: calc(100vh - 60px);
+}

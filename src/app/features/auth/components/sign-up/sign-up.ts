@@ -1,0 +1,43 @@
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { LoginService } from '../../services/login-service';
+import { Router, RouterLink } from '@angular/router';
+import { Error } from '../../../../common/error/error';
+
+@Component({
+  imports: [FormsModule, RouterLink, Error],
+  selector: 'app-sign-up',
+  styleUrl: './sign-up.css',
+  templateUrl: './sign-up.html',
+})
+export class SignUp {
+  private loginService = inject(LoginService);
+  private router = inject(Router)
+  private changeDetectorRef = inject(ChangeDetectorRef);
+
+  errors: string[] = [];
+
+  newUser = {
+    username: '',
+    email: '',
+    password: '',
+    name: '',
+    createdAt: new Date(),
+    updatedAt: new Date()
+  };
+
+  onSignUp() {
+    console.log('User submitted:', this.newUser);
+    this.loginService.signup(this.newUser).subscribe({
+      next: (data) => {
+        console.log('Logged in profile saved:', data);
+        this.router.navigate(['/login']);
+      },
+      error: (err) => {
+        this.errors = [err.error.error]
+        this.changeDetectorRef.detectChanges();
+        console.error('Authentication rejected:', err);
+      }
+    });
+  }
+}

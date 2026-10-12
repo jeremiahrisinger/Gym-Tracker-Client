@@ -1,0 +1,40 @@
+<div class="main-container">
+    <h2>Chart</h2>
+    <hr/>
+    <br/>
+
+    <h3>Back Squat</h3>
+    <hr/>
+    <div>
+        <canvas #squatChart></canvas>
+    </div>
+    <app-common-table 
+        [columns]="tableColumns" 
+        [data]="this.squatSets" 
+        [emptyMessage]="'No workout sets recorded yet.'">
+    </app-common-table>    
+    <br/>
+
+    <h3>Bench Press</h3>
+    <hr/>
+    <div>
+        <canvas #benchChart></canvas>
+    </div>
+    <app-common-table 
+        [columns]="tableColumns" 
+        [data]="this.benchSets" 
+        [emptyMessage]="'No workout sets recorded yet.'">
+    </app-common-table>  
+    <br/>
+    
+    <h3>Deadlift</h3>
+    <hr/>
+    <div>
+        <canvas #deadliftChart></canvas>
+    </div>
+    <app-common-table 
+        [columns]="tableColumns" 
+        [data]="this.deadliftSets" 
+        [emptyMessage]="'No workout sets recorded yet.'">
+    </app-common-table>  
+</div>

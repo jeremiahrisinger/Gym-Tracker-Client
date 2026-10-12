@@ -1,0 +1,64 @@
+<div class="main-container">
+  <h2>Start New Program</h2>
+  <hr class="divider" />
+  <br />
+
+  <form
+    (ngSubmit)="createNewProgram()"
+    #setForm="ngForm"
+    class="form"
+  >
+    <div class="form-group small">
+      <label for="programName">Program Name</label>
+      <input
+        type="text"
+        id="programName"
+        name="programName"
+        [(ngModel)]="newProgram.name"
+        required
+        placeholder="e.g., Amazing Workout Program! "
+      />
+    </div>
+
+    <div class="btn-row">
+      <button
+        type="submit"
+        [disabled]="!setForm.valid"
+        class="btn-submit"
+      >
+        Start New Program
+      </button>
+    </div>
+  </form>
+
+  <br />
+
+  <h2>Existing Programs</h2>
+  <hr class="divider" />
+  <br />
+
+  @for (p of programs; track $index) {
+
+  <app-common-table
+    [name]="p.name"
+    [columns]="tableColumns"
+    [data]="p.programDays"
+    [emptyMessage]="'No days in this program yet!'"
+    [includeCustomButton]="true"
+    [customButtonLabel]="'Start Workout'"
+    [customButtonIcon]="'start'"
+    (rowItem)="startWorkout($event)"
+  ></app-common-table>
+  <div class="btn-row">
+    <button
+      class="btn-modify"
+      [routerLink]="['/edit-program', p._id]"
+    >
+      Edit Program
+    </button>
+  </div>
+  <br />
+  } @empty {
+  <p style="min-width: 100%; text-align: center;">No Programs recorded. Get Lifting!</p>
+  }
+</div>

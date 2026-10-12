@@ -1,0 +1,10 @@
+{
+  "/api": {
+    "target": "https://bbv15jlx-5404.use2.devtunnels.ms",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/api": ""
+    }
+  }
+}

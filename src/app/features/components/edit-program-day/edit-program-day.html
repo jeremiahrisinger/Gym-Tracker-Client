@@ -1,0 +1,139 @@
+<div class="main-container">
+  <h2>Edit Program Day</h2>
+  <hr class="divider" />
+  <br />
+
+  <app-common-table
+    [name]="programDay?.name"
+    [columns]="tableColumns"
+    [data]="programDay?.programSets"
+    [emptyMessage]="'No sets created yet.'"
+    [includeDeleteButton]="true"
+    (deleteRow)="deleteProgramSet($event)"
+  >
+  </app-common-table>
+  <br />
+  <hr class="divider" />
+  <br />
+  <!-- 📋 INPUT FORM SECTION -->
+  <form
+    (ngSubmit)="addProgramSet()"
+    #setForm="ngForm"
+    class="form"
+  >
+    <div class="form-group">
+      <label for="name">Exercise Name</label>
+      <input
+        type="text"
+        id="exercise"
+        name="exercise"
+        [(ngModel)]="newProgramSet.liftingSet.exercise"
+        required
+        placeholder="e.g., Bench Press, Back Squat, Deadlift"
+      />
+    </div>
+
+    <div class="form-group small">
+      <label for="sets">Sets</label>
+      <input
+        type="number"
+        id="sets"
+        name="sets"
+        [(ngModel)]="newProgramSet.liftingSet.sets"
+        required
+        min="0"
+      />
+    </div>
+
+    <div class="form-group small">
+      <label for="reps">Reps</label>
+      <input
+        type="number"
+        id="reps"
+        name="reps"
+        [(ngModel)]="newProgramSet.liftingSet.reps"
+        required
+        min="0"
+      />
+    </div>
+
+    <div class="form-group small">
+      <label for="weight">Weight (lbs)</label>
+      <input
+        type="number"
+        id="weight"
+        name="weight"
+        [(ngModel)]="newProgramSet.liftingSet.weight"
+        required
+        min="0"
+      />
+    </div>
+
+    <div class="form-group small">
+      <label for="rateOfPerceivedExertion">RPE</label>
+      <input
+        type="number"
+        id="rateOfPerceivedExertion"
+        name="rateOfPerceivedExertion"
+        [(ngModel)]="newProgramSet.liftingSet.rateOfPerceivedExertion"
+        required
+        min="1"
+      />
+    </div>
+
+    <div class="form-group small">
+      <label for="repIncrement">Rep Increment</label>
+      <input
+        type="number"
+        id="repIncrement"
+        name="repIncrement"
+        [(ngModel)]="newProgramSet.repIncrement"
+      />
+    </div>
+
+    <div class="form-group small">
+      <label for="setIncrement">Set Increment</label>
+      <input
+        type="number"
+        id="setIncrement"
+        name="setIncrement"
+        [(ngModel)]="newProgramSet.setIncrement"
+      />
+    </div>
+
+    <div class="form-group small">
+      <label for="weightIncrement">Weight Increment</label>
+      <input
+        type="number"
+        id="weightIncrement"
+        name="weightIncrement"
+        [(ngModel)]="newProgramSet.weightIncrement"
+      />
+    </div>
+
+    <div class="btn-row">
+      <button
+        type="submit"
+        [disabled]="!setForm.valid"
+        class="btn-submit"
+      >
+        Add Program Set
+      </button>
+      <button
+        type="button"
+        class="btn-modify"
+      >
+        Clear
+      </button>
+      <button
+        type="button"
+        class="btn-modify"
+        [routerLink]="['/edit-program', this.id()]"
+      >
+        Edit Program
+      </button>
+    </div>
+
+  </form>
+
+</div>

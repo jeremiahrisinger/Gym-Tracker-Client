@@ -1,0 +1,72 @@
+<div class="main-container">
+  <app-page-title [title]="'Edit Program'"></app-page-title>
+  <app-error [errorMessages]="errors"></app-error>
+
+  <app-common-table
+    [name]="program?.name"
+    [columns]="tableColumns"
+    [data]="program?.programDays"
+    [emptyMessage]="'No days created yet.'"
+    [includeDeleteButton]="true"
+    [includeEditButton]="true"
+    (deleteRow)="deleteProgramDay($event)"
+    (editRow)="editProgramDay($event)"
+  >
+  </app-common-table>
+  <br />
+  <hr class="divider" />
+  <br />
+  <!-- 📋 INPUT FORM SECTION -->
+  <form
+    (ngSubmit)="addProgramDay()"
+    #setForm="ngForm"
+    class="form"
+  >
+    <div class="form-group small">
+      <label for="name">Program Day Name</label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        [(ngModel)]="newProgramDay.name"
+        required
+        placeholder="e.g., Push Day, Pull Day, Leg Day"
+      />
+    </div>
+
+    <div class="btn-row">
+      <button
+        type="submit"
+        [disabled]="!setForm.valid"
+        class="btn-submit"
+      >
+        Add Program Day
+      </button>
+      <button
+        type="button"
+        class="btn-modify"
+      >
+        Clear
+      </button>
+      <button
+        type="button"
+        class="btn-modify"
+        [routerLink]="['/programs']"
+      >
+        All Programs
+      </button>
+      @if(this.program?.programDays == null || this.program.programDays?.length==0){
+      <button
+        type="button"
+        class="btn-red"
+        title="Delete Program"
+        (click)="this.deleteProgram()"
+      >
+        Delete Program
+      </button>
+      }
+    </div>
+
+  </form>
+
+</div>
