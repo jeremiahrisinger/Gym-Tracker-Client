@@ -6,7 +6,8 @@ import { Router, RouterLink } from '@angular/router';
 import { ProgramService } from '../../services/program-service';
 import { TableColumn } from '../../../common/models/table-column';
 import { LiftingSet } from '../../models/lifting-set';
-import { ProgramSet } from '../../models/program';
+import { ProgramDay, ProgramSet } from '../../models/program';
+import { ApiResponse } from '../../../core/models/api-response';
 
 @Component({
   imports: [FormsModule, CommonTable, RouterLink],
@@ -61,8 +62,8 @@ export class EditProgramDay {
 
   loadProgramDay(): void {
     this.programService.getProgramDayByName(this.id(), this.dayName()).subscribe({
-      next: (response: any) => {
-        this.programDay = response.programDay;
+      next: (response: ApiResponse<ProgramDay>) => {
+        this.programDay = response.data;
         this.changeDetectorRef.detectChanges();
       },
       error: (err) => {
@@ -73,9 +74,9 @@ export class EditProgramDay {
 
   addProgramSet(): void {
     this.programService.addSetToProgramDay(this.id(), this.dayName(), this.newProgramSet).subscribe({
-      next: (response: any) => {
+      next: (response: ApiResponse<ProgramDay>) => {
         this.programDay.updatedAt = new Date();
-        this.programDay.programSets = response.data;
+        this.programDay = response.data;
         this.changeDetectorRef.detectChanges();
       },
       error: (err) => {
@@ -90,7 +91,7 @@ export class EditProgramDay {
     if (!confirmDelete) return;
 
     this.programService.removeSetFromProgramDay(this.id(), this.dayName(), rowItem).subscribe({
-      next: (response: any) => {
+      next: (response: ApiResponse<ProgramDay>) => {
         const index = this.programDay.programSets.indexOf(rowItem);
         if (index > -1) {
           this.programDay.programSets.splice(index, 1);

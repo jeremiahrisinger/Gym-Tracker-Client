@@ -3,6 +3,8 @@ import { Chart } from 'chart.js/auto';
 import { LiftingSetService } from '../../services/lifting-set-service';
 import { TableColumn } from '../../../common/models/table-column';
 import { CommonTable } from '../../../common/common-table/common-table';
+import { ApiResponse } from '../../../core/models/api-response';
+import { LiftingSet } from '../../models/lifting-set';
 
 @Component({
     imports: [CommonTable],
@@ -42,8 +44,8 @@ export class WorkoutChart implements OnInit {
 
     loadBenchSets(): void {
         this.liftingSetService.getSetsByExercise('Bench Press').subscribe({
-            next: (response: any) => {
-                this.benchSets = response.data.splice(-5) || [];
+            next: (response: ApiResponse<LiftingSet[]>) => {
+                this.benchSets = response.data?.splice(-5) || [];
                 this.changeDetectorRef.detectChanges();
                 this.renderChart(this.benchChartInstance, this.benchChartRef, this.benchSets);
             },
@@ -53,8 +55,8 @@ export class WorkoutChart implements OnInit {
 
     loadSquatSets(): void {
         this.liftingSetService.getSetsByExercise('Back Squat').subscribe({
-            next: (response: any) => {
-                this.squatSets = response.data.splice(-5) || [];
+            next: (response: ApiResponse<LiftingSet[]>) => {
+                this.squatSets = response.data?.splice(-5) || [];
                 this.changeDetectorRef.detectChanges();
 
                 this.renderChart(this.squatChartInstance, this.squatChartRef, this.squatSets);
@@ -65,8 +67,8 @@ export class WorkoutChart implements OnInit {
 
     loadDeadliftSets(): void {
         this.liftingSetService.getSetsByExercise('Deadlift').subscribe({
-            next: (response: any) => {
-                this.deadliftSets = response.data.splice(-5) || [];
+            next: (response: ApiResponse<LiftingSet[]>) => {
+                this.deadliftSets = response.data?.splice(-5) || [];
                 this.changeDetectorRef.detectChanges();
 
                 this.renderChart(this.deadliftChartInstance, this.deadliftChartRef, this.deadliftSets);

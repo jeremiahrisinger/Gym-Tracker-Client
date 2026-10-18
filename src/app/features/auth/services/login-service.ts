@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { User } from '../models/user';
 import { BASE_URL, CURRENT_USER_LABEL } from '../../../common/constants';
 import { HttpHeaders } from '@angular/common/http';
+import { ApiResponse } from '../../../core/models/api-response';
 
 
 
@@ -40,10 +41,12 @@ export class LoginService {
    * @param newUser 
    * @returns 
    */
-  signup(newUser: User): Observable<User> {
-    return this.http.post<User>(`${this.apiUrl}/signup`, newUser).pipe(
-      tap((user: User) => {
-        this.saveUserSession(user);
+  signup(newUser: User): Observable<ApiResponse<User>> {
+    return this.http.post<ApiResponse<User>>(`${this.apiUrl}/signup`, newUser).pipe(
+      tap((response: ApiResponse<User>) => {
+        if (response.data) {
+          this.saveUserSession(response.data);
+        }
       })
     );
   }
@@ -53,36 +56,38 @@ export class LoginService {
    * @param credentials 
    * @returns 
    */
-  login(credentials: any): Observable<User> {
+  login(credentials: any): Observable<ApiResponse<User>> {
     this.menuAccessSubject.next(true);
     const headers = new HttpHeaders({
       'X-Tunnel-Skip-Anti-Phishing': 'true',
       'Access-Control-Allow-Origin': 'true'
     });
 
-    return this.http.post<User>(`${this.apiUrl}/login`, credentials, { headers }).pipe(
-      tap((response: any) => {
-        this.saveUserSession(response.data);
+    return this.http.post<ApiResponse<User>>(`${this.apiUrl}/login`, credentials, { headers }).pipe(
+      tap((response: ApiResponse<User>) => {
+        if (response.data) {
+          this.saveUserSession(response.data);
+        }
       })
     );
   }
 
-  getUser(): Observable<User> {
+  getUser(): Observable<ApiResponse<User>> {
     const activeUser = this.currentUser();
     const userId = activeUser?._id || '';
     const params = new HttpParams().set('userId', userId)
 
-    return this.http.get<User>(this.apiUrl, { params });
+    return this.http.get<ApiResponse<User>>(this.apiUrl, { params });
   }
 
-  updateUser(updatedUser: User, confirmPassword: string): Observable<User> {
+  updateUser(updatedUser: User, confirmPassword: string): Observable<ApiResponse<User>> {
     const activeUser = this.currentUser();
     const userId = activeUser?._id || '';
     const payload = {
       ...updatedUser,
       confirmPassword: confirmPassword
     }
-    return this.http.put<User>(`${this.apiUrl}/${userId}`, payload);
+    return this.http.put<ApiResponse<User>>(`${this.apiUrl}/${userId}`, payload);
   }
 
   /**

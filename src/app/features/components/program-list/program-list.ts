@@ -8,6 +8,7 @@ import { TableColumn } from '../../../common/models/table-column';
 import { Program } from '../../models/program';
 import { WorkoutService } from '../../services/workout-service';
 import { Workout } from '../../models/workout';
+import { ApiResponse } from '../../../core/models/api-response';
 
 @Component({
   imports: [CommonTable, FormsModule, RouterLink],
@@ -54,9 +55,11 @@ export class ProgramList implements OnInit {
 
   loadPrograms(): void {
     this.programService.getPrograms().subscribe({
-      next: (response: any) => {
-        this.programs = response.data;
-        this.changeDetectorRef.detectChanges();
+      next: (response: ApiResponse<Program[]>) => {
+        if (response.data) {
+          this.programs = response.data;
+          this.changeDetectorRef.detectChanges();
+        }
       },
       error: (err) => {
         console.error('Could not load data from Express server:', err);
@@ -66,10 +69,12 @@ export class ProgramList implements OnInit {
 
   createNewProgram(): void {
     this.programService.createNewProgram(this.newProgram).subscribe({
-      next: (response: any) => {
-        this.newProgram = response.data;
-        this.changeDetectorRef.detectChanges();
-        this.router.navigate(['/edit-program', response.data.program._id]);
+      next: (response: ApiResponse<Program>) => {
+        if (response.data) {
+          this.newProgram = response.data;
+          this.changeDetectorRef.detectChanges();
+          this.router.navigate(['/edit-program', response.data?._id]);
+        }
       },
       error: (err) => {
         console.error('Could not add new program to Express server:', err);
@@ -91,7 +96,7 @@ export class ProgramList implements OnInit {
     this.createNewWorkout();
     //this.increaseProgramDayCompletionCount(rowItem);
   }
-  
+
   // increaseProgramDayCompletionCount(rowItem: any) {
   //   rowItem.completionCount += 1;
   //   this.programService.updateProgramDay(rowItem._id).subscribe({

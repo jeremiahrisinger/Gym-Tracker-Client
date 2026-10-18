@@ -5,6 +5,7 @@ import { User } from '../../models/user';
 import { LoginService } from '../../services/login-service';
 import { Router } from '@angular/router';
 import { Error } from '../../../../common/error/error';
+import { ApiResponse } from '../../../../core/models/api-response';
 
 @Component({
   imports: [FormsModule, Error],
@@ -33,12 +34,8 @@ export class Account implements OnInit {
 
   loadUser(): void {
     this.loginService.getUser().subscribe({
-      next: (response: any) => {
-        this.user = {
-          username: response.data.username,
-          email: response.data.email,
-          name: response.data.name
-        };
+      next: (response: ApiResponse<User>) => {
+        this.user = response.data;
         this.confirmPassword = ''
         this.changeDetectorRef.detectChanges();
       },
@@ -53,7 +50,7 @@ export class Account implements OnInit {
 
   updateUser(): void {
     this.loginService.updateUser(this.user, this.confirmPassword).subscribe({
-      next: (response: any) => {
+      next: (response: ApiResponse<User>) => {
         this.user = response.data;
         this.confirmPassword = ''
         this.changeDetectorRef.detectChanges();

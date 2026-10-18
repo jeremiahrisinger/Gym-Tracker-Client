@@ -4,6 +4,7 @@ import { BASE_URL } from '../../common/constants';
 import { LoginService } from '../auth/services/login-service';
 import { Observable } from 'rxjs';
 import { Program, ProgramDay } from '../models/program';
+import { ApiResponse } from '../../core/models/api-response';
 
 @Service()
 export class ProgramService {
@@ -11,45 +12,45 @@ export class ProgramService {
   private apiUrl = BASE_URL + '/programs';
   private loginService = inject(LoginService);
 
-  getPrograms(): Observable<Program[]> {
+  getPrograms(): Observable<ApiResponse<Program[]>> {
     const params = this.loginService.getUserIdAsParam();
 
-    return this.http.get<Program[]>(this.apiUrl, { params});
+    return this.http.get<ApiResponse<Program[]>>(this.apiUrl, { params});
 
   }
 
-  getProgramById(programId: string): Observable<Program> {
+  getProgramById(programId: string): Observable<ApiResponse<Program>> {
     const url = `${this.apiUrl}/${programId}`;
     const params = this.loginService.getUserIdAsParam();
 
-    return this.http.get<Program>(url, { params });
+    return this.http.get<ApiResponse<Program>>(url, { params });
   }
 
-  getProgramDayByName(programId: string, programDayName: string): Observable<ProgramDay> {
+  getProgramDayByName(programId: string, programDayName: string): Observable<ApiResponse<ProgramDay>> {
     const url = `${this.apiUrl}/${programId}/days/${programDayName}`;
     const params = this.loginService.getUserIdAsParam();
 
-    return this.http.get<ProgramDay>(url, { params });
+    return this.http.get<ApiResponse<ProgramDay>>(url, { params });
   }
 
-  deleteProgramById(programId: string): Observable<Program> {
+  deleteProgramById(programId: string): Observable<ApiResponse<Program>> {
     const url = `${this.apiUrl}/delete/${programId}`;
     const params = this.loginService.getUserIdAsParam();
 
-    return this.http.delete<Program>(url, { params });
+    return this.http.delete<ApiResponse<Program>>(url, { params });
   }
 
-  createNewProgram(newProgram: Program): Observable<Program> {
+  createNewProgram(newProgram: Program): Observable<ApiResponse<Program>> {
     const activeUser = this.loginService.currentUser();
     newProgram.userId = activeUser?._id
     const payload = {
       ...newProgram
     };
     console.log(payload);
-    return this.http.post<Program>(this.apiUrl, payload);
+    return this.http.post<ApiResponse<Program>>(this.apiUrl, payload);
   }
 
-  updateProgramDay(programId: string, updatedProgramDay: ProgramDay): Observable<ProgramDay> {
+  updateProgramDay(programId: string, updatedProgramDay: ProgramDay): Observable<ApiResponse<ProgramDay>> {
     const url = `${this.apiUrl}/${programId}`;
     const activeUser = this.loginService.currentUser();
     updatedProgramDay.userId = activeUser?._id
@@ -57,10 +58,10 @@ export class ProgramService {
       ...updatedProgramDay
     };
     
-    return this.http.put<ProgramDay>(url, payload);
+    return this.http.put<ApiResponse<ProgramDay>>(url, payload);
   }
 
-  addDayToProgram(programId: string, newProgramDay: ProgramDay): Observable<Program> {
+  addDayToProgram(programId: string, newProgramDay: ProgramDay): Observable<ApiResponse<ProgramDay>> {
     const url = `${this.apiUrl}/${programId}/add-day`;
     const activeUser = this.loginService.currentUser();
     newProgramDay.userId = activeUser?._id
@@ -68,10 +69,10 @@ export class ProgramService {
       ...newProgramDay
     };
 
-    return this.http.patch<Program>(url, payload);
+    return this.http.patch<ApiResponse<ProgramDay>>(url, payload);
   }
 
-  removeDayFromProgram(programId: string, day: any) {
+  removeDayFromProgram(programId: string, day: any) : Observable<ApiResponse<Program>>{
     const url = `${this.apiUrl}/${programId}/delete-day`;
     console.log(url);
     const activeUser = this.loginService.currentUser();
@@ -81,10 +82,10 @@ export class ProgramService {
       ...day,
       userId
     };
-    return this.http.patch<Program>(url, payload);
+    return this.http.patch<ApiResponse<Program>>(url, payload);
   }
 
-  addSetToProgramDay(programId: string, programDayId: string, newProgramSet: any): Observable<ProgramDay> {
+  addSetToProgramDay(programId: string, programDayId: string, newProgramSet: any): Observable<ApiResponse<ProgramDay>> {
     const url = `${this.apiUrl}/${programId}/days/${programDayId}/add-set`;
     const activeUser = this.loginService.currentUser();
     newProgramSet.userId = activeUser?._id
@@ -92,10 +93,10 @@ export class ProgramService {
       ...newProgramSet
     };
 
-    return this.http.patch<ProgramDay>(url, payload);
+    return this.http.patch<ApiResponse<ProgramDay>>(url, payload);
   }
 
-  removeSetFromProgramDay(programId: string, programDayId: string, set: any): Observable<ProgramDay> {
+  removeSetFromProgramDay(programId: string, programDayId: string, set: any): Observable<ApiResponse<ProgramDay>> {
     const url = `${this.apiUrl}/${programId}/days/${programDayId}/delete-set`;
     const activeUser = this.loginService.currentUser();
     const userId = activeUser?._id || '';
@@ -105,6 +106,6 @@ export class ProgramService {
       userId
     };
 
-    return this.http.patch<ProgramDay>(url, payload);
+    return this.http.patch<ApiResponse<ProgramDay>>(url, payload);
   }
 }

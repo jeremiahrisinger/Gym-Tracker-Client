@@ -10,6 +10,7 @@ import { Router, RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { PageTitle } from '../../../common/page-title/page-title';
 import { Error } from '../../../common/error/error';
+import { ApiResponse } from '../../../core/models/api-response';
 
 
 @Component({
@@ -57,7 +58,7 @@ export class WorkoutTracker implements OnInit {
 
   loadWorkout(): void {
     this.workoutService.getWorkoutById(this.id()).subscribe({
-      next: (response: any) => {
+      next: (response: ApiResponse<Workout>) => {
         this.workout = response.data;
         this.changeDetectorRef.detectChanges();
       },
@@ -74,7 +75,7 @@ export class WorkoutTracker implements OnInit {
     if (!confirmDelete) return;
 
     this.workoutService.deleteWorkoutById(this.id()).subscribe({
-      next: (response: any) => {
+      next: (response: ApiResponse) => {
         console.log(`response: ${response.message}`);
         this.router.navigate(['/workouts']);
       },
@@ -88,10 +89,9 @@ export class WorkoutTracker implements OnInit {
 
   addSet(): void {
     this.workoutService.addSetToWorkout(this.id(), this.newSet).subscribe({
-      next: (response: any) => {
+      next: (response: ApiResponse) => {
         console.log(`response: ${response.message}`);
-        console.log('New set added:', response.addedSet);
-        this.workout.sets = [...this.workout.sets, response.addedSet];
+        this.workout.sets = [...this.workout.sets, response.data?.addedSet];
         this.changeDetectorRef.detectChanges();
       },
       error: (err) => {
@@ -107,11 +107,12 @@ export class WorkoutTracker implements OnInit {
     if (!confirmDelete) return;
 
     this.workoutService.removeSetFromWorkout(this.id(), rowItem).subscribe({
-      next: (response: any) => {
-        console.log(`response: ${response.message}`);
-        console.log('Workout after set deletion:', response.workout);
-        this.workout = response.workout;
-        this.changeDetectorRef.detectChanges();
+      next: (response: ApiResponse<Workout>) => {
+        console.log(`response: ${response}`);
+        if (response.data) {
+          this.workout = response.data;
+          this.changeDetectorRef.detectChanges();
+        }
       },
       error: (err) => {
         this.errors = [err.error.message];

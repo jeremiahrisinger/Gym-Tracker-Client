@@ -3,6 +3,8 @@ import { FormsModule } from '@angular/forms';
 import { LoginService } from '../../services/login-service';
 import { Router, RouterLink } from '@angular/router';
 import { Error } from '../../../../common/error/error';
+import { ApiResponse } from '../../../../core/models/api-response';
+import { User } from '../../models/user';
 
 @Component({
   imports: [FormsModule, RouterLink, Error],
@@ -29,7 +31,7 @@ export class SignUp {
   onSignUp() {
     console.log('User submitted:', this.newUser);
     this.loginService.signup(this.newUser).subscribe({
-      next: (response: any) => {
+      next: (response: ApiResponse<User>) => {
         console.log('Logged in profile saved:', response.data);
         this.router.navigate(['/login']);
       },

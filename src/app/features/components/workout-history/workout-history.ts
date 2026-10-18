@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { PageTitle } from '../../../common/page-title/page-title';
+import { ApiResponse } from '../../../core/models/api-response';
 
 @Component({
   imports: [CommonTable, FormsModule, RouterLink, PageTitle],
@@ -48,8 +49,8 @@ export class WorkoutHistory implements OnInit {
 
   loadWorkouts(): void {
     this.workoutService.getWorkouts().subscribe({
-      next: (response: any) => {
-        this.workouts = response.data;
+      next: (response: ApiResponse<Workout[]>) => {
+        this.workouts = response.data || [];
         this.changeDetectorRef.detectChanges(); // Trigger change detection to update the view
       },
       error: (err) => {
@@ -60,10 +61,12 @@ export class WorkoutHistory implements OnInit {
 
   createNewWorkout(): void {
     this.workoutService.addWorkout(this.newWorkout).subscribe({
-      next: (response: any) => {
-        this.newWorkout = response.data;
-        this.changeDetectorRef.detectChanges();
-        this.router.navigate(['/tracker', response.data.id]);
+      next: (response: ApiResponse<Workout>) => {
+        if (response.data) {
+          this.newWorkout = response.data;
+          this.changeDetectorRef.detectChanges();
+          this.router.navigate(['/tracker', response.data._id]);
+        }
       },
       error: (err) => {
         console.error('Could not add new workout to Express server:', err);
