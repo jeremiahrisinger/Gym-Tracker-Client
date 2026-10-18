@@ -42,8 +42,8 @@ export class WorkoutChart implements OnInit {
 
     loadBenchSets(): void {
         this.liftingSetService.getSetsByExercise('Bench Press').subscribe({
-            next: (data) => {
-                this.benchSets = data.splice(-5) || [];
+            next: (response: any) => {
+                this.benchSets = response.data.splice(-5) || [];
                 this.changeDetectorRef.detectChanges();
                 this.renderChart(this.benchChartInstance, this.benchChartRef, this.benchSets);
             },
@@ -53,8 +53,8 @@ export class WorkoutChart implements OnInit {
 
     loadSquatSets(): void {
         this.liftingSetService.getSetsByExercise('Back Squat').subscribe({
-            next: (data) => {
-                this.squatSets = data.splice(-5) || [];
+            next: (response: any) => {
+                this.squatSets = response.data.splice(-5) || [];
                 this.changeDetectorRef.detectChanges();
 
                 this.renderChart(this.squatChartInstance, this.squatChartRef, this.squatSets);
@@ -65,8 +65,8 @@ export class WorkoutChart implements OnInit {
 
     loadDeadliftSets(): void {
         this.liftingSetService.getSetsByExercise('Deadlift').subscribe({
-            next: (data) => {
-                this.deadliftSets = data.splice(-5) || [];
+            next: (response: any) => {
+                this.deadliftSets = response.data.splice(-5) || [];
                 this.changeDetectorRef.detectChanges();
 
                 this.renderChart(this.deadliftChartInstance, this.deadliftChartRef, this.deadliftSets);

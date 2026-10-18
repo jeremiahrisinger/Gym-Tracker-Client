@@ -33,11 +33,11 @@ export class Account implements OnInit {
 
   loadUser(): void {
     this.loginService.getUser().subscribe({
-      next: (data: any) => {
+      next: (response: any) => {
         this.user = {
-          username: data.user.username,
-          email: data.user.email,
-          name: data.user.name
+          username: response.data.username,
+          email: response.data.email,
+          name: response.data.name
         };
         this.confirmPassword = ''
         this.changeDetectorRef.detectChanges();
@@ -53,8 +53,8 @@ export class Account implements OnInit {
 
   updateUser(): void {
     this.loginService.updateUser(this.user, this.confirmPassword).subscribe({
-      next: (data: any) => {
-        this.user = data.user;
+      next: (response: any) => {
+        this.user = response.data;
         this.confirmPassword = ''
         this.changeDetectorRef.detectChanges();
       },

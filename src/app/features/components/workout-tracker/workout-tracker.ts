@@ -57,8 +57,8 @@ export class WorkoutTracker implements OnInit {
 
   loadWorkout(): void {
     this.workoutService.getWorkoutById(this.id()).subscribe({
-      next: (data) => {
-        this.workout = data;
+      next: (response: any) => {
+        this.workout = response.data;
         this.changeDetectorRef.detectChanges();
       },
       error: (err) => {

@@ -29,8 +29,8 @@ export class SignUp {
   onSignUp() {
     console.log('User submitted:', this.newUser);
     this.loginService.signup(this.newUser).subscribe({
-      next: (data) => {
-        console.log('Logged in profile saved:', data);
+      next: (response: any) => {
+        console.log('Logged in profile saved:', response.data);
         this.router.navigate(['/login']);
       },
       error: (err) => {

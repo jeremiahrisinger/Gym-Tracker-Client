@@ -61,8 +61,8 @@ export class EditProgramDay {
 
   loadProgramDay(): void {
     this.programService.getProgramDayByName(this.id(), this.dayName()).subscribe({
-      next: (data: any) => {
-        this.programDay = data.programDay;
+      next: (response: any) => {
+        this.programDay = response.programDay;
         this.changeDetectorRef.detectChanges();
       },
       error: (err) => {
@@ -73,9 +73,9 @@ export class EditProgramDay {
 
   addProgramSet(): void {
     this.programService.addSetToProgramDay(this.id(), this.dayName(), this.newProgramSet).subscribe({
-      next: (data: any) => {
+      next: (response: any) => {
         this.programDay.updatedAt = new Date();
-        this.programDay.programSets = [...this.programDay.programSets, data.addedSet];
+        this.programDay.programSets = response.data;
         this.changeDetectorRef.detectChanges();
       },
       error: (err) => {
@@ -90,14 +90,14 @@ export class EditProgramDay {
     if (!confirmDelete) return;
 
     this.programService.removeSetFromProgramDay(this.id(), this.dayName(), rowItem).subscribe({
-      next: (response) => {
+      next: (response: any) => {
         const index = this.programDay.programSets.indexOf(rowItem);
         if (index > -1) {
           this.programDay.programSets.splice(index, 1);
           this.changeDetectorRef.detectChanges();
         }
 
-        this.programDay = response;
+        this.programDay = response.data;
         this.changeDetectorRef.detectChanges();
       },
       error: (err) => {

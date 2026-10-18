@@ -49,7 +49,7 @@ export class EditProgram {
     this.programService.getProgramById(this.id()).subscribe({
       next: (response: any) => {
         console.log(`response: ${response.message}`);
-        this.program = response.program;
+        this.program = response.data;
         this.changeDetectorRef.detectChanges();
       },
       error: (err) => {
@@ -82,9 +82,7 @@ export class EditProgram {
   addProgramDay(): void {
     this.programService.addDayToProgram(this.id(), this.newProgramDay).subscribe({
       next: (response: any) => {
-        console.log(`response: ${response.message}`);
-        console.log('New programDay added:', response.addedDay);
-        this.program.programDays = [...this.program.programDays, response.addedDay];
+        this.program.programDays = response.data.programDays;
         this.changeDetectorRef.detectChanges();
         this.router.navigate(['/edit-program-day', this.id(), response.addedDay.name]);
       },
@@ -100,7 +98,7 @@ export class EditProgram {
     this.programService.removeDayFromProgram(this.id(), rowItem).subscribe({
       next: (response: any) => {
         console.log(`response: ${response.program}`);
-        this.program = response.program;
+        this.program = response.data;
         this.changeDetectorRef.detectChanges();
       },
       error: (err) => {

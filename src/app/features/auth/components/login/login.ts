@@ -24,8 +24,8 @@ export class Login {
 
   onLogin() {
     this.loginService.login(this.credentials).subscribe({
-      next: (data) => {
-        console.log('Logged in profile saved:', data);
+      next: (response: any) => {
+        console.log('Logged in profile saved:', response.data);
         this.router.navigate(['/workouts']);
       },
       error: (err) => {

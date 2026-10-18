@@ -54,10 +54,9 @@ export class ProgramList implements OnInit {
 
   loadPrograms(): void {
     this.programService.getPrograms().subscribe({
-      next: (data) => {
-        this.programs = data;
+      next: (response: any) => {
+        this.programs = response.data;
         this.changeDetectorRef.detectChanges();
-        console.log(this.programs);
       },
       error: (err) => {
         console.error('Could not load data from Express server:', err);
@@ -67,11 +66,10 @@ export class ProgramList implements OnInit {
 
   createNewProgram(): void {
     this.programService.createNewProgram(this.newProgram).subscribe({
-      next: (data: any) => {
-        console.log('New program started:', data);
-        this.newProgram = data.program;
+      next: (response: any) => {
+        this.newProgram = response.data;
         this.changeDetectorRef.detectChanges();
-        this.router.navigate(['/edit-program', data.program._id]);
+        this.router.navigate(['/edit-program', response.data.program._id]);
       },
       error: (err) => {
         console.error('Could not add new program to Express server:', err);
@@ -109,10 +107,10 @@ export class ProgramList implements OnInit {
 
   createNewWorkout(): void {
     this.workoutService.addWorkout(this.newWorkout).subscribe({
-      next: (data: any) => {
-        this.newWorkout = data;
+      next: (response: any) => {
+        this.newWorkout = response.data;
         this.changeDetectorRef.detectChanges();
-        this.router.navigate(['/tracker', data.id]);
+        this.router.navigate(['/tracker', response.data.id]);
       },
       error: (err) => {
         console.error('Could not add new workout to Express server:', err);

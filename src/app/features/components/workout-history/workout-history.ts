@@ -48,8 +48,8 @@ export class WorkoutHistory implements OnInit {
 
   loadWorkouts(): void {
     this.workoutService.getWorkouts().subscribe({
-      next: (data) => {
-        this.workouts = data;
+      next: (response: any) => {
+        this.workouts = response.data;
         this.changeDetectorRef.detectChanges(); // Trigger change detection to update the view
       },
       error: (err) => {
@@ -60,10 +60,10 @@ export class WorkoutHistory implements OnInit {
 
   createNewWorkout(): void {
     this.workoutService.addWorkout(this.newWorkout).subscribe({
-      next: (data: any) => {
-        this.newWorkout = data;
+      next: (response: any) => {
+        this.newWorkout = response.data;
         this.changeDetectorRef.detectChanges();
-        this.router.navigate(['/tracker', data.id]);
+        this.router.navigate(['/tracker', response.data.id]);
       },
       error: (err) => {
         console.error('Could not add new workout to Express server:', err);

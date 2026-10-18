@@ -61,8 +61,8 @@ export class LoginService {
     });
 
     return this.http.post<User>(`${this.apiUrl}/login`, credentials, { headers }).pipe(
-      tap((user: User) => {
-        this.saveUserSession(user);
+      tap((response: any) => {
+        this.saveUserSession(response.data);
       })
     );
   }
