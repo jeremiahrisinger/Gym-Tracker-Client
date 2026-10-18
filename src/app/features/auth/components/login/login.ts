@@ -30,7 +30,7 @@ export class Login {
       },
       error: (err) => {
         console.error('Authentication rejected:', err)
-        this.errors = [err.error.error];
+        this.errors = [err.error.message];
         this.changeDetectorRef.detectChanges();
       }
 

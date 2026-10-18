@@ -34,7 +34,7 @@ export class SignUp {
         this.router.navigate(['/login']);
       },
       error: (err) => {
-        this.errors = [err.error.error]
+        this.errors = [err.error.message]
         this.changeDetectorRef.detectChanges();
         console.error('Authentication rejected:', err);
       }

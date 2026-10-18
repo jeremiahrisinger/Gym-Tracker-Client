@@ -43,7 +43,7 @@ export class Account implements OnInit {
         this.changeDetectorRef.detectChanges();
       },
       error: (err) => {
-        this.errors = [err.error.error]
+        this.errors = [err.error.message]
         this.changeDetectorRef.detectChanges();
 
         console.error('Could not load data from Express server:', err);
@@ -59,7 +59,7 @@ export class Account implements OnInit {
         this.changeDetectorRef.detectChanges();
       },
       error: (err) => {
-        this.errors = [err.error.error]
+        this.errors = [err.error.message]
         this.changeDetectorRef.detectChanges();
         console.error('Could not load data from Express server:', err);
       }

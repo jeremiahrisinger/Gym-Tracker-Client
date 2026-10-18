@@ -62,7 +62,7 @@ export class WorkoutTracker implements OnInit {
         this.changeDetectorRef.detectChanges();
       },
       error: (err) => {
-        this.errors = [err.error.error];
+        this.errors = [err.error.message];
         console.error('Could not load data from Express server:', err);
       }
     });
@@ -79,7 +79,7 @@ export class WorkoutTracker implements OnInit {
         this.router.navigate(['/workouts']);
       },
       error: (err) => {
-        this.errors = [err.error.error];
+        this.errors = [err.error.message];
         console.error('Could not load data from Express server:', err);
       }
     });
@@ -95,7 +95,7 @@ export class WorkoutTracker implements OnInit {
         this.changeDetectorRef.detectChanges();
       },
       error: (err) => {
-        this.errors = [err.error.error];
+        this.errors = [err.error.message];
         console.error('Could not add new set to Express server:', err);
       }
     });
@@ -114,7 +114,7 @@ export class WorkoutTracker implements OnInit {
         this.changeDetectorRef.detectChanges();
       },
       error: (err) => {
-        this.errors = [err.error.error];
+        this.errors = [err.error.message];
         console.error('Could not delete set from Express server:', err);
         this.changeDetectorRef.detectChanges();
       }

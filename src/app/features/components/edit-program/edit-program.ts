@@ -54,7 +54,7 @@ export class EditProgram {
       },
       error: (err) => {
         console.error('Could not load data from Express server:', err);
-        this.errors = [err.error.error];
+        this.errors = [err.error.message];
         this.changeDetectorRef.detectChanges();
       }
     });
