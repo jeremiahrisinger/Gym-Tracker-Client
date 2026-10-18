@@ -42,7 +42,7 @@
         @if(this.includeEditButton() && columns().length > 0) {
         <td>
           <button
-            (click)="rowItem.emit(row)"
+            (click)="editRow.emit(row)"
             class="btn-clear"
             title="Edit Row"
           >
@@ -64,7 +64,7 @@
         @if(this.includeCustomButton() && columns().length > 0) {
         <td>
           <button
-            (click)="editRow.emit(row)"
+            (click)="rowItem.emit(row)"
             class="btn-clear"
             title="{{ customButtonLabel() }}">
             @if(customButtonIcon()) {
