@@ -29,7 +29,7 @@ export class LiftingSetService {
   addSet(newSet: LiftingSet): Observable<LiftingSet> {
     const activeUser = this.loginService.currentUser();
     console.log(activeUser);
-    newSet.userId = activeUser?.id
+    newSet.userId = activeUser?._id
     const payload = {
       ...newSet
     };

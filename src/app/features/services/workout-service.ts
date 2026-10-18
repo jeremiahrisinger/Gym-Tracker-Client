@@ -35,7 +35,7 @@ export class WorkoutService {
 
   addWorkout(newWorkout: Workout): Observable<Workout> {
     const activeUser = this.loginService.currentUser();
-    newWorkout.userId = activeUser?.id
+    newWorkout.userId = activeUser?._id
     const payload = {
       ...newWorkout
     };
@@ -46,7 +46,7 @@ export class WorkoutService {
   addSetToWorkout(workoutId: string, newSet: LiftingSet): Observable<Workout> {
     const url = `${this.apiUrl}/${workoutId}/add-set`;
     const activeUser = this.loginService.currentUser();
-    newSet.userId = activeUser?.id
+    newSet.userId = activeUser?._id
     const payload = {
       ...newSet
     };
@@ -58,7 +58,7 @@ export class WorkoutService {
     const url = `${this.apiUrl}/${workoutId}/delete-set`;
     console.log(url);
     const activeUser = this.loginService.currentUser();
-    const userId = activeUser?.id || '';
+    const userId = activeUser?._id || '';
 
     const payload = {
       ...set,

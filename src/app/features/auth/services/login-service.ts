@@ -69,7 +69,7 @@ export class LoginService {
 
   getUser(): Observable<User> {
     const activeUser = this.currentUser();
-    const userId = activeUser?.id || '';
+    const userId = activeUser?._id || '';
     const params = new HttpParams().set('userId', userId)
 
     return this.http.get<User>(this.apiUrl, { params });
@@ -77,7 +77,7 @@ export class LoginService {
 
   updateUser(updatedUser: User, confirmPassword: string): Observable<User> {
     const activeUser = this.currentUser();
-    const userId = activeUser?.id || '';
+    const userId = activeUser?._id || '';
     const payload = {
       ...updatedUser,
       confirmPassword: confirmPassword
@@ -110,7 +110,7 @@ export class LoginService {
 
   public getUserIdAsParam(): HttpParams {
     const activeUser = this.currentUser();
-    const userId = activeUser?.id || '';
+    const userId = activeUser?._id || '';
     const params = new HttpParams().set('userId', userId)
 
     return params;

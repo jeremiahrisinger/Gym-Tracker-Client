@@ -41,7 +41,7 @@ export class ProgramService {
 
   createNewProgram(newProgram: Program): Observable<Program> {
     const activeUser = this.loginService.currentUser();
-    newProgram.userId = activeUser?.id
+    newProgram.userId = activeUser?._id
     const payload = {
       ...newProgram
     };
@@ -52,7 +52,7 @@ export class ProgramService {
   updateProgramDay(programId: string, updatedProgramDay: ProgramDay): Observable<ProgramDay> {
     const url = `${this.apiUrl}/${programId}`;
     const activeUser = this.loginService.currentUser();
-    updatedProgramDay.userId = activeUser?.id
+    updatedProgramDay.userId = activeUser?._id
     const payload = {
       ...updatedProgramDay
     };
@@ -63,7 +63,7 @@ export class ProgramService {
   addDayToProgram(programId: string, newProgramDay: ProgramDay): Observable<Program> {
     const url = `${this.apiUrl}/${programId}/add-day`;
     const activeUser = this.loginService.currentUser();
-    newProgramDay.userId = activeUser?.id
+    newProgramDay.userId = activeUser?._id
     const payload = {
       ...newProgramDay
     };
@@ -75,7 +75,7 @@ export class ProgramService {
     const url = `${this.apiUrl}/${programId}/delete-day`;
     console.log(url);
     const activeUser = this.loginService.currentUser();
-    const userId = activeUser?.id || '';
+    const userId = activeUser?._id || '';
 
     const payload = {
       ...day,
@@ -87,7 +87,7 @@ export class ProgramService {
   addSetToProgramDay(programId: string, programDayId: string, newProgramSet: any): Observable<ProgramDay> {
     const url = `${this.apiUrl}/${programId}/days/${programDayId}/add-set`;
     const activeUser = this.loginService.currentUser();
-    newProgramSet.userId = activeUser?.id
+    newProgramSet.userId = activeUser?._id
     const payload = {
       ...newProgramSet
     };
@@ -98,7 +98,7 @@ export class ProgramService {
   removeSetFromProgramDay(programId: string, programDayId: string, set: any): Observable<ProgramDay> {
     const url = `${this.apiUrl}/${programId}/days/${programDayId}/delete-set`;
     const activeUser = this.loginService.currentUser();
-    const userId = activeUser?.id || '';
+    const userId = activeUser?._id || '';
 
     const payload = {
       ...set,
