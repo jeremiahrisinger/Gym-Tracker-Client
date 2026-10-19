@@ -8,9 +8,11 @@ import { TableColumn } from '../../../common/models/table-column';
 import { LiftingSet } from '../../models/lifting-set';
 import { ProgramDay, ProgramSet } from '../../models/program';
 import { ApiResponse } from '../../../core/models/api-response';
+import { Error } from '../../../common/error/error';
+import { PageTitle } from '../../../common/page-title/page-title';
 
 @Component({
-  imports: [FormsModule, CommonTable, RouterLink],
+  imports: [FormsModule, CommonTable, RouterLink, Error, PageTitle],
   providers: [DatePipe],
   selector: 'app-edit-program-day',
   styleUrl: './edit-program-day.css',
@@ -37,6 +39,7 @@ export class EditProgramDay {
   dayName = input.required<string>();
 
   programDay: any;
+  errors: string[] = [];
 
   newProgramSet: ProgramSet = {
     liftingSet: {
@@ -68,6 +71,8 @@ export class EditProgramDay {
       },
       error: (err) => {
         console.error('Could not load data from Express server:', err);
+        this.errors = [err.error.message];
+        this.changeDetectorRef.detectChanges();
       }
     });
   }
@@ -75,12 +80,15 @@ export class EditProgramDay {
   addProgramSet(): void {
     this.programService.addSetToProgramDay(this.id(), this.dayName(), this.newProgramSet).subscribe({
       next: (response: ApiResponse<ProgramDay>) => {
+        console.log(response);
         this.programDay.updatedAt = new Date();
         this.programDay = response.data;
         this.changeDetectorRef.detectChanges();
       },
       error: (err) => {
         console.error('Could not load data from Express server:', err);
+        this.errors = [err.error.message];
+        this.changeDetectorRef.detectChanges();
       }
     });
   }
@@ -103,6 +111,8 @@ export class EditProgramDay {
       },
       error: (err) => {
         console.error('Could not load data from Express server:', err);
+        this.errors = [err.error.message];
+        this.changeDetectorRef.detectChanges();
       }
     });
   }

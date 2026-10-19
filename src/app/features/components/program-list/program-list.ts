@@ -9,9 +9,11 @@ import { Program } from '../../models/program';
 import { WorkoutService } from '../../services/workout-service';
 import { Workout } from '../../models/workout';
 import { ApiResponse } from '../../../core/models/api-response';
+import { Error } from '../../../common/error/error';
+import { PageTitle } from '../../../common/page-title/page-title';
 
 @Component({
-  imports: [CommonTable, FormsModule, RouterLink],
+  imports: [CommonTable, FormsModule, RouterLink, Error, PageTitle],
   providers: [DatePipe],
   selector: 'app-program-list',
   styleUrl: './program-list.css',
@@ -29,6 +31,8 @@ export class ProgramList implements OnInit {
     { key: 'completionCount', label: 'Workouts Done', sortable: true, filterable: true },
     { key: 'createdAt', label: 'Date Created', sortable: true, filterable: true, transform: (value) => this.datePipe.transform(value, 'mediumDate') || '' }
   ];
+
+  errors: string[] = [];
 
   newProgram: Program = {
     name: '',
@@ -63,6 +67,8 @@ export class ProgramList implements OnInit {
       },
       error: (err) => {
         console.error('Could not load data from Express server:', err);
+        this.errors = [err.error.message];
+        this.changeDetectorRef.detectChanges();
       }
     });
   }
@@ -78,6 +84,8 @@ export class ProgramList implements OnInit {
       },
       error: (err) => {
         console.error('Could not add new program to Express server:', err);
+        this.errors = [err.error.message];
+        this.changeDetectorRef.detectChanges();
       }
 
     });
@@ -106,6 +114,8 @@ export class ProgramList implements OnInit {
   //     },
   //     error: (err) => {
   //       console.error('Could not update program day completion count on Express server:', err);
+  //          this.errors = [err.error.message];
+   //         this.changeDetectorRef.detectChanges();
   //     }
   //   });
   // }
@@ -119,6 +129,8 @@ export class ProgramList implements OnInit {
       },
       error: (err) => {
         console.error('Could not add new workout to Express server:', err);
+        this.errors = [err.error.message];
+        this.changeDetectorRef.detectChanges();
       }
 
     })

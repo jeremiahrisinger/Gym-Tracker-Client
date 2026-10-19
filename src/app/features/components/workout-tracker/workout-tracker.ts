@@ -64,6 +64,7 @@ export class WorkoutTracker implements OnInit {
       },
       error: (err) => {
         this.errors = [err.error.message];
+        this.changeDetectorRef.detectChanges();
         console.error('Could not load data from Express server:', err);
       }
     });
@@ -81,6 +82,7 @@ export class WorkoutTracker implements OnInit {
       },
       error: (err) => {
         this.errors = [err.error.message];
+        this.changeDetectorRef.detectChanges();
         console.error('Could not load data from Express server:', err);
       }
     });
@@ -90,12 +92,13 @@ export class WorkoutTracker implements OnInit {
   addSet(): void {
     this.workoutService.addSetToWorkout(this.id(), this.newSet).subscribe({
       next: (response: ApiResponse) => {
-        console.log(`response: ${response.message}`);
+        console.log(response);
         this.workout.sets = [...this.workout.sets, response.data?.addedSet];
         this.changeDetectorRef.detectChanges();
       },
       error: (err) => {
         this.errors = [err.error.message];
+        this.changeDetectorRef.detectChanges();
         console.error('Could not add new set to Express server:', err);
       }
     });

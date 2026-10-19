@@ -8,9 +8,10 @@ import { Router, RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { PageTitle } from '../../../common/page-title/page-title';
 import { ApiResponse } from '../../../core/models/api-response';
+import { Error } from '../../../common/error/error';
 
 @Component({
-  imports: [CommonTable, FormsModule, RouterLink, PageTitle],
+  imports: [CommonTable, FormsModule, RouterLink, PageTitle, Error],
   providers: [DatePipe],
   selector: 'app-workout-history',
   styleUrl: './workout-history.css',
@@ -32,6 +33,7 @@ export class WorkoutHistory implements OnInit {
     { key: 'notes', label: 'Notes', sortable: false, filterable: true }
   ];
 
+  errors: string[] = [];
   newWorkout: Workout = {
     programDayId: '',
     name: '',
@@ -55,6 +57,8 @@ export class WorkoutHistory implements OnInit {
       },
       error: (err) => {
         console.error('Could not load data from Express server:', err);
+        this.errors = [err.error.message];
+        this.changeDetectorRef.detectChanges();
       }
     });
   }
@@ -70,6 +74,8 @@ export class WorkoutHistory implements OnInit {
       },
       error: (err) => {
         console.error('Could not add new workout to Express server:', err);
+        this.errors = [err.error.message];
+        this.changeDetectorRef.detectChanges();
       }
 
     })

@@ -1,7 +1,7 @@
 <div class="main-container">
-  <h2>Start New Program</h2>
-  <hr class="divider" />
-  <br />
+  <app-page-title [title]="'Start New Program'"></app-page-title>
+  <app-error [errorMessages]="errors"></app-error>
+
 
   <form
     (ngSubmit)="createNewProgram()"
@@ -33,9 +33,7 @@
 
   <br />
 
-  <h2>Existing Programs</h2>
-  <hr class="divider" />
-  <br />
+  <app-page-title [title]="'Existing Program'"></app-page-title>
 
   @for (p of programs; track $index) {
 

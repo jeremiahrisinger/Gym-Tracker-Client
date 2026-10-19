@@ -1,7 +1,6 @@
 <div class="main-container">
-  <h2>Edit Program Day</h2>
-  <hr class="divider" />
-  <br />
+  <app-page-title [title]="'Edit Program Day'"></app-page-title>
+  <app-error [errorMessages]="errors"></app-error>
 
   <app-common-table
     [name]="programDay?.name"
@@ -12,10 +11,8 @@
     (deleteRow)="deleteProgramSet($event)"
   >
   </app-common-table>
-  <br />
-  <hr class="divider" />
-  <br />
-  <!-- 📋 INPUT FORM SECTION -->
+
+  <app-page-title [title]="'Add Program Set'"></app-page-title>
   <form
     (ngSubmit)="addProgramSet()"
     #setForm="ngForm"
