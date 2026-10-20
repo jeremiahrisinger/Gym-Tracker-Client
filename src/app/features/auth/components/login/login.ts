@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
-import { LoginService } from '../../services/login-service';
+import { AuthService } from '../../services/auth-service';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Error } from '../../../../common/error/error';
@@ -13,7 +13,7 @@ import { User } from '../../models/user';
   templateUrl: './login.html',
 })
 export class Login {
-  private loginService = inject(LoginService);
+  private loginService = inject(AuthService);
   private router = inject(Router);
   private changeDetectorRef = inject(ChangeDetectorRef);
 

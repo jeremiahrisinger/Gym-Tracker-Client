@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { LoginService } from '../../services/login-service';
+import { AuthService } from '../../services/auth-service';
 import { Router, RouterLink } from '@angular/router';
 import { Error } from '../../../../common/error/error';
 import { ApiResponse } from '../../../../core/models/api-response';
@@ -13,7 +13,7 @@ import { User } from '../../models/user';
   templateUrl: './sign-up.html',
 })
 export class SignUp {
-  private loginService = inject(LoginService);
+  private loginService = inject(AuthService);
   private router = inject(Router)
   private changeDetectorRef = inject(ChangeDetectorRef);
 

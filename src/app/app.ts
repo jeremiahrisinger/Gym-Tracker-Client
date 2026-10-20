@@ -1,7 +1,7 @@
 import { Component, signal, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { CURRENT_USER_LABEL } from './common/constants';
-import { LoginService } from './features/auth/services/login-service';
+import { AuthService } from './features/auth/services/auth-service';
 import { AsyncPipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 
@@ -13,7 +13,7 @@ import { MatIcon } from '@angular/material/icon';
 })
 export class App implements OnInit {
   protected readonly title = signal('client');
-  protected loginService = inject(LoginService);
+  protected loginService = inject(AuthService);
 
   protected userId: any = this.loginService.isLoggedIn();
   private changeDetectorRef = inject(ChangeDetectorRef);

@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
 import { BASE_URL } from '../../common/constants';
-import { LoginService } from '../auth/services/login-service';
+import { AuthService } from '../auth/services/auth-service';
 import { Observable } from 'rxjs';
 import { Workout } from '../models/workout';
 import { LiftingSet } from '../models/lifting-set';
@@ -11,7 +11,7 @@ import { ApiResponse } from '../../core/models/api-response';
 export class WorkoutService {
   private http = inject(HttpClient);
   private apiUrl = BASE_URL + '/workouts';
-  private loginService = inject(LoginService);
+  private loginService = inject(AuthService);
 
 
   getWorkouts(): Observable<ApiResponse<Workout[]>> {

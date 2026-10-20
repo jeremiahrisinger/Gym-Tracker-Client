@@ -6,16 +6,12 @@ import { BASE_URL, CURRENT_USER_LABEL } from '../../../common/constants';
 import { HttpHeaders } from '@angular/common/http';
 import { ApiResponse } from '../../../core/models/api-response';
 
-
-
 @Service()
-export class LoginService {
+export class AuthService {
 
   private http = inject(HttpClient);
-  private apiUrl = BASE_URL + '/users';
+  private apiUrl = BASE_URL + '/auth';
   private menuAccessSubject = new BehaviorSubject<boolean | null>(null);
-
-
 
   currentUser = signal<User | null>(null);
 
@@ -72,23 +68,7 @@ export class LoginService {
     );
   }
 
-  getUser(): Observable<ApiResponse<User>> {
-    const activeUser = this.currentUser();
-    const userId = activeUser?._id || '';
-    const params = new HttpParams().set('userId', userId)
-
-    return this.http.get<ApiResponse<User>>(this.apiUrl, { params });
-  }
-
-  updateUser(updatedUser: User, confirmPassword: string): Observable<ApiResponse<User>> {
-    const activeUser = this.currentUser();
-    const userId = activeUser?._id || '';
-    const payload = {
-      ...updatedUser,
-      confirmPassword: confirmPassword
-    }
-    return this.http.put<ApiResponse<User>>(`${this.apiUrl}/${userId}`, payload);
-  }
+  
 
   /**
    * Removes all user session information and menu items
@@ -113,10 +93,14 @@ export class LoginService {
     return computed(() => this.currentUser) != null;
   }
 
-  public getUserIdAsParam(): HttpParams {
+  public getUserId(): string {
     const activeUser = this.currentUser();
     const userId = activeUser?._id || '';
-    const params = new HttpParams().set('userId', userId)
+    return userId;
+  }
+
+  public getUserIdAsParam(): HttpParams {
+    const params = new HttpParams().set('userId', this.getUserId())
 
     return params;
   }

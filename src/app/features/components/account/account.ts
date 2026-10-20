@@ -1,11 +1,10 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
-import { CURRENT_USER_LABEL } from '../../../../common/constants';
 import { FormsModule } from '@angular/forms';
-import { User } from '../../models/user';
-import { LoginService } from '../../services/login-service';
+import { User } from '../../auth/models/user';
 import { Router } from '@angular/router';
-import { Error } from '../../../../common/error/error';
-import { ApiResponse } from '../../../../core/models/api-response';
+import { Error } from '../../../common/error/error';
+import { ApiResponse } from '../../../core/models/api-response';
+import { UserService } from '../../services/user-service';
 
 @Component({
   imports: [FormsModule, Error],
@@ -15,7 +14,7 @@ import { ApiResponse } from '../../../../core/models/api-response';
 })
 export class Account implements OnInit {
 
-  private loginService = inject(LoginService);
+  private userService = inject(UserService);
   private changeDetectorRef = inject(ChangeDetectorRef);
   private router = inject(Router);
 
@@ -33,7 +32,7 @@ export class Account implements OnInit {
   }
 
   loadUser(): void {
-    this.loginService.getUser().subscribe({
+    this.userService.getUser().subscribe({
       next: (response: ApiResponse<User>) => {
         this.user = response.data;
         this.confirmPassword = ''
@@ -49,7 +48,7 @@ export class Account implements OnInit {
   }
 
   updateUser(): void {
-    this.loginService.updateUser(this.user, this.confirmPassword).subscribe({
+    this.userService.updateUser(this.user, this.confirmPassword).subscribe({
       next: (response: ApiResponse<User>) => {
         this.user = response.data;
         this.confirmPassword = ''
@@ -64,7 +63,7 @@ export class Account implements OnInit {
   }
 
   deleteAccount(): void {
-    //this.loginService.deleteUser()
+    //this.userService.deleteUser()
     this.errors = ['This feature is not available.'];
     this.changeDetectorRef.detectChanges();
 

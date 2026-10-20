@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
 import { BASE_URL } from '../../common/constants';
-import { LoginService } from '../auth/services/login-service';
+import { AuthService } from '../auth/services/auth-service';
 import { Observable } from 'rxjs';
 import { Program, ProgramDay } from '../models/program';
 import { ApiResponse } from '../../core/models/api-response';
@@ -10,7 +10,7 @@ import { ApiResponse } from '../../core/models/api-response';
 export class ProgramService {
   private http = inject(HttpClient);
   private apiUrl = BASE_URL + '/programs';
-  private loginService = inject(LoginService);
+  private loginService = inject(AuthService);
 
   getPrograms(): Observable<ApiResponse<Program[]>> {
     const params = this.loginService.getUserIdAsParam();

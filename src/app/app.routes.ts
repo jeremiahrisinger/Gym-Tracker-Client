@@ -4,7 +4,7 @@ import { Login } from './features/auth/components/login/login';
 import { SignUp } from './features/auth/components/sign-up/sign-up';
 import { WorkoutChart } from './features/components/workout-chart/workout-chart';
 import { WorkoutHistory } from './features/components/workout-history/workout-history';
-import { Account } from './features/auth/components/account/account';
+import { Account } from './features/components/account/account';
 import { ProgramList } from './features/components/program-list/program-list';
 import { EditProgram } from './features/components/edit-program/edit-program';
 import { DefaultPage } from './features/components/default-page/default-page';

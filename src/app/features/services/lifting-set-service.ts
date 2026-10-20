@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { LiftingSet } from '../models/lifting-set';
-import { LoginService } from '../auth/services/login-service';
+import { AuthService } from '../auth/services/auth-service';
 import { BASE_URL } from '../../common/constants';
 import { ApiResponse } from '../../core/models/api-response';
 
@@ -11,7 +11,7 @@ export class LiftingSetService {
 
   private http = inject(HttpClient);
   private apiUrl = BASE_URL + '/liftingSets';
-  private loginService = inject(LoginService);
+  private loginService = inject(AuthService);
 
 
   getSets(): Observable<ApiResponse<LiftingSet[]>> {
