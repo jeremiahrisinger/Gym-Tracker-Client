@@ -5,7 +5,7 @@ h3{
 .table-responsive {
     width: 100%;
     overflow-x: auto;
-    border: 1px solid var(--muted-text-color);
+    border: 1px solid var(--dark-text-color);
     border-radius: 0px;
 }
 
@@ -21,7 +21,7 @@ h3{
     font-weight: 500;
     text-transform: capitalize;
     padding: 12px 16px;
-    border-bottom: 1px solid #222;
+    border-bottom: 1px solid var(--dark-text-color);
     text-align: center;
 }
 

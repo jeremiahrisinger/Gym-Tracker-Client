@@ -28,7 +28,8 @@ export const routes: Routes = [
       { path: 'programs', component: ProgramList },
       { path: 'edit-program/:id', component: EditProgram },
       { path: 'edit-program-day/:id/:dayName', component: EditProgramDay },
-      { path: '**', component: DefaultPage }
+      { path: 'pageNotFound', component: DefaultPage },
+      { path: '**', redirectTo: 'pageNotFound', pathMatch: 'full'}
     ]
   },
 
