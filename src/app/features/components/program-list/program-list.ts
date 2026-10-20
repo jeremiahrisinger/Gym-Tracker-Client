@@ -122,10 +122,13 @@ export class ProgramList implements OnInit {
 
   createNewWorkout(): void {
     this.workoutService.addWorkout(this.newWorkout).subscribe({
-      next: (response: any) => {
-        this.newWorkout = response.data;
-        this.changeDetectorRef.detectChanges();
-        this.router.navigate(['/tracker', response.data.id]);
+      next: (response: ApiResponse<Workout>) => {
+        if (response.data) {
+          console.log(response);
+          this.newWorkout = response.data;
+          this.changeDetectorRef.detectChanges();
+          this.router.navigate(['/tracker', response.data._id]);
+        }
       },
       error: (err) => {
         console.error('Could not add new workout to Express server:', err);
