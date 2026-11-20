@@ -11,9 +11,11 @@ import { Workout } from '../../models/workout';
 import { ApiResponse } from '../../../core/models/api-response';
 import { Error } from '../../../common/error/error';
 import { PageTitle } from '../../../common/components/page-title/page-title';
+import { SectionHeader } from '../../../common/components/section-header/section-header';
+import { Input } from '../../../common/components/input/input';
 
 @Component({
-  imports: [Table, FormsModule, RouterLink, Error, PageTitle],
+  imports: [Table, FormsModule, RouterLink, Error, PageTitle, SectionHeader, Input],
   providers: [DatePipe],
   selector: 'app-program-list',
   styleUrl: './program-list.css',

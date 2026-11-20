@@ -3,22 +3,22 @@
   <app-error [errorMessages]="errors"></app-error>
 
 
+  <app-section-header header="Start New Program"></app-section-header>
   <form
     (ngSubmit)="createNewProgram()"
     #setForm="ngForm"
-    class="form"
+    class="inline-form"
   >
-    <div class="form-group small">
-      <label for="programName">Program Name</label>
-      <input
-        type="text"
-        id="programName"
-        name="programName"
-        [(ngModel)]="newProgram.name"
-        required
-        placeholder="e.g., Amazing Workout Program! "
-      />
-    </div>
+    <app-input
+      label="Program Name"
+      name="programName"
+      type="text"
+      size="large"
+      [required]="true"
+      [(value)]="newProgram.name"
+      helpText="The name of the new program."
+        placeholder="e.g., Amazing Workout Program!"
+    ></app-input>
 
     <div class="btn-row-rev">
       <button
@@ -26,12 +26,10 @@
         [disabled]="!setForm.valid"
         class="btn-submit"
       >
-        Start New Program
+        Add Day
       </button>
     </div>
   </form>
-
-  <br />
 
   <app-page-title [title]="'Existing Program'"></app-page-title>
 

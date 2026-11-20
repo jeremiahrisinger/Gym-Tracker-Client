@@ -1,46 +1,51 @@
 <div class="main-container-narrow ">
-    <h2>Log In</h2>
-    <hr class="divider" />
-    <br />
-    <app-error [errorMessages]="errors"></app-error>
-    
-    <form (ngSubmit)="onLogin()" #signUpForm="ngForm" class="form">
-        <div class="form-group">
-            <label for="username">Username</label>
-            <input 
-                type="text" 
-                id="username" 
-                name="username" 
-                [(ngModel)]="credentials.username" 
-                required
-                placeholder="Enter your username" />
-        </div>
+  <h2>Log In</h2>
+  <hr class="divider" />
+  <br />
+  <app-error [errorMessages]="errors"></app-error>
 
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input 
-                type="password" 
-                id="password" 
-                name="password" 
-                [(ngModel)]="credentials.password" 
-                required
-                placeholder="Enter your password" />
-        </div>
+  <form
+    (ngSubmit)="onLogin()"
+    #signUpForm="ngForm"
+    class="form"
+  >
+    <app-input
+      label="Username"
+      name="username"
+      type="text"
+      size="large"
+      [required]="true"
+      [(value)]="credentials.username"
+      placeholder="Username"
+    ></app-input>
 
-        <div class="btn-row-rev">
-            <button 
-                type="submit" 
-                [disabled]="!signUpForm.valid" 
-                class="btn-submit">
-                Log in
-            </button>
 
-            <button 
-                type="button" 
-                class="btn-modify" 
-                [routerLink]="['/signup']" >
-                Sign Up
-            </button>
-        </div>
-    </form>
+    <app-input
+      label="Password"
+      name="password"
+      type="password"
+      size="large"
+      [required]="true"
+      [(value)]="credentials.password"
+      placeholder="Enter your password"
+    ></app-input>
+
+    <div class="btn-row-rev">
+      <button
+        type="submit"
+        [disabled]="!signUpForm.valid"
+        class="btn-submit"
+      >
+        Log in
+      </button>
+
+      <button
+        type="button"
+        class="btn-modify"
+        [routerLink]="['/signup']"
+      >
+        Sign Up
+      </button>
+    </div>
+  </form>
 </div>

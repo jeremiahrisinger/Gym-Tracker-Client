@@ -5,19 +5,19 @@
    <form
     (ngSubmit)="startWorkout()"
     #setForm="ngForm"
-    class="form"
+    class="inline-form"
   >
-    <div class="form-group small">
-      <label for="WorkoutName">Workout Name</label>
-      <input
-        type="text"
-        id="WorkoutName"
+      <app-input
+        label="Workout Name"
         name="WorkoutName"
-        [(ngModel)]="newWorkout.name"
-        required
+        type="text"
+        size="large"
+        [required]="true"
+        [(value)]="newWorkout.name"
+        helpText="The name of the new workout to be started."
         placeholder="e.g., Chest and Triceps, Week 4: Back Day"
-      />
-    </div>
+      ></app-input>
+      
 
     <div class="btn-row-rev">
       <button

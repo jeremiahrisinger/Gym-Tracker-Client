@@ -20,6 +20,7 @@ export class Table {
   includeCustomButton = input<boolean>(false);
   customButtonLabel = input<string>('');
   customButtonIcon = input<string>('add');
+  customButtonHelp = input<string>();
   deleteRow = output<any>();
   editRow = output<any>();
   rowItem = output<any>();

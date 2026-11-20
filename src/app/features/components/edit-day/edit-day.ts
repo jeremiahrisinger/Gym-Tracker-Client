@@ -17,9 +17,10 @@ import { SectionHeader } from '../../../common/components/section-header/section
 import { Error } from '../../../common/error/error';
 import { ProgramDay } from '../../models/program';
 import { ProgramService } from '../../services/program-service';
+import { Input } from '../../../common/components/input/input';
 
 @Component({
-  imports: [FormsModule, Table, Tabs, PageTitle, SectionHeader, Error, RouterLink],
+  imports: [FormsModule, Table, Tabs, PageTitle, SectionHeader, Error, RouterLink, Input],
   selector: 'app-edit-day',
   styleUrl: './edit-day.css',
   templateUrl: './edit-day.html',
@@ -31,11 +32,35 @@ export class EditDay implements OnInit {
 
   tableColumns: TableColumn[] = [
     { key: 'setNumber', label: 'Set' },
-    { key: 'target', label: 'Reps', transform: (value) => value.reps },
-    { key: 'target', label: 'Weight', transform: (value) => `${value.weight} lbs` },
-    { key: 'target', label: 'RPE', transform: (value) => value.rpe },
-    { key: 'target', label: 'Pauses', transform: (value) => `${value.pauseTop}" | ${value.pauseMiddle}" | ${value.pauseBottom}"` },
-    { key: 'target', label: 'Tempo', transform: (value) => `${value.ecentricTempo}" | ${value.concentricTempo}"` },
+    { 
+      key: 'target', 
+      label: 'Reps', 
+      help: 'The number of whole reps completed in this set.',
+      transform: (value) => value.reps 
+    },
+    { 
+      key: 'target', 
+      label: 'Weight', 
+      transform: (value) => `${value.weight} lbs` 
+    },
+    { 
+      key: 'target', 
+      label: 'RPE', 
+      help:'Rate of Perceived Exertion (Rating of Perceived Effort) is a subjective scale used to measure how hard your body works during physical activity, exercise, or training.',
+      transform: (value) => value.rpe 
+    },
+    { 
+      key: 'target', 
+      label: 'Pauses', 
+      help: 'Pause is the number of seconds you staticly hold the exercise at the top, middle, or bottom of the rep. Top | Middle | Bottom',
+      transform: (value) => `${value.pauseTop}" | ${value.pauseMiddle}" | ${value.pauseBottom}"` 
+    },
+    { 
+      key: 'target', 
+      label: 'Tempo', 
+      help: 'Eccentric tempo is the number of seconds spent lowering or resisting a weight as a muscle lengthens, while concentric tempo is the number of seconds spent lifting or pushing a weight as a muscle shortens. Ecentric | Concentric',
+      transform: (value) => `${value.ecentricTempo}" | ${value.concentricTempo}"` 
+    },
   ];
 
   programId = input.required<string>();

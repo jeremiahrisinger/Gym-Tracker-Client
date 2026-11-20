@@ -5,9 +5,10 @@ import { Router, RouterLink } from '@angular/router';
 import { Error } from '../../../../common/error/error';
 import { ApiResponse } from '../../../../core/models/api-response';
 import { User } from '../../models/user';
+import { Input } from '../../../../common/components/input/input';
 
 @Component({
-  imports: [FormsModule, RouterLink, Error],
+  imports: [FormsModule, RouterLink, Error, Input],
   selector: 'app-sign-up',
   styleUrl: './sign-up.css',
   templateUrl: './sign-up.html',

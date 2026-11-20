@@ -107,11 +107,36 @@ body {
 .form {
     display: flex;
     gap: 1rem;
-    align-items: center;
+    align-items: left;
     padding: 0 1.5rem;
     border-radius: 0px;
     flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: flex-start;
 }
+
+.inline-form {
+    display: flex;
+    gap: 1rem;
+    align-items: left;
+    padding: 0 1rem 2rem 1rem;
+    border-radius: 0px;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.form div.input-row {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    padding: 1.5rem 0;
+    border-radius: 0px;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
 
 .form-group {
     display: flex;
@@ -122,12 +147,26 @@ body {
 
 .form-group.small {
     flex: 1;
-    min-width: 80px;
+    min-width: 60px;
+    max-width: 140px;
+}
+
+.form-group.medium {
+    flex: 1;
+    min-width: 140px;
+    max-width: 300px;
 }
 
 .form-group.large {
     flex: 3;
-    min-width: 70%;
+    min-width: 300px;
+    max-width: 640px;
+}
+
+.form-group.x-large {
+    flex: 3;
+    min-width: 450px;
+    max-width: 640px;
 }
 
 .form-group label {
@@ -292,4 +331,14 @@ body {
         cursor: not-allowed;
     }
 
+    .inline-form {
+        display: flex;
+        gap: 1rem;
+        align-items: left;
+        padding: 0 1rem 2rem 1rem;
+        border-radius: 0px;
+        flex-wrap: wrap;
+        flex-direction: row;
+        justify-content: space-between;
+    }
 }

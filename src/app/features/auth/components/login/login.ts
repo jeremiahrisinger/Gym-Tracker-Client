@@ -5,9 +5,10 @@ import { FormsModule } from '@angular/forms';
 import { Error } from '../../../../common/error/error';
 import { ApiResponse } from '../../../../core/models/api-response';
 import { User } from '../../models/user';
+import { Input } from '../../../../common/components/input/input';
 
 @Component({
-  imports: [FormsModule, RouterLink, Error],
+  imports: [FormsModule, RouterLink, Error, Input],
   selector: 'app-login',
   styleUrl: './login.css',
   templateUrl: './login.html',

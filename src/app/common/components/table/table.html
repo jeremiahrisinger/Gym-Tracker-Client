@@ -7,21 +7,45 @@
     <thead>
       <tr>
         @for (col of columns(); track $index) {
-        <th>{{ col.label }}</th>
+        <th>{{ col.label }}
+          @if(col.help){
+          <mat-icon
+            title="{{col.help}}"
+            style="font-size: 18px; margin-bottom:-10px;"
+          >help_outline</mat-icon>
+          }
+        </th>
         }
         @if(this.includeEditButton()){
-        <th>
+        <th class="button">
           Edit
+          <mat-icon
+            title="Allows you to edit this row in the table."
+            style="font-size: 18px; margin-bottom:-10px;"
+          >help_outline
+          </mat-icon>
         </th>
         }
         @if(this.includeDeleteButton()){
-        <th>
+        <th class="button">
           Delete
+          <mat-icon
+            title="Permanently Deletes this row in the table."
+            style="font-size: 18px; margin-bottom:-10px;"
+          >help_outline
+          </mat-icon>
         </th>
         }
-        @if(this.includeCustomButton()){
-        <th>
+        @if(includeCustomButton()) {
+        <th class="button">
           {{ customButtonLabel() }}
+          @if(this.customButtonHelp()){
+          <mat-icon
+            title="{{customButtonHelp()}}"
+            style="font-size: 18px; margin-bottom:-10px;"
+          >help_outline
+          </mat-icon>
+          }
         </th>
         }
       </tr>
@@ -33,22 +57,22 @@
         <!-- Uses index-signature access to read values dynamically -->
         <td>
           @if (col.transform) {
-            @if(col.useMatIcon){
-            <mat-icon>{{ col.transform(row[col.key]) }}</mat-icon>
-            } @else {
-            {{ col.transform(row[col.key]) }}
-            }
+          @if(col.useMatIcon){
+          <mat-icon>{{ col.transform(row[col.key]) }}</mat-icon>
           } @else {
-            @if(col.useMatIcon){
-            <mat-icon>{{ row[col.key] }}</mat-icon>
-            } @else {
-            {{ row[col.key] }}
-            }
+          {{ col.transform(row[col.key]) }}
+          }
+          } @else {
+          @if(col.useMatIcon){
+          <mat-icon>{{ row[col.key] }}</mat-icon>
+          } @else {
+          {{ row[col.key] }}
+          }
           }
         </td>
         }
         @if(this.includeEditButton() && columns().length > 0) {
-        <td>
+        <td class="button">
           <button
             (click)="editRow.emit(row)"
             class="btn-clear"
@@ -59,7 +83,7 @@
         </td>
         }
         @if(this.includeDeleteButton() && columns().length > 0) {
-        <td>
+        <td class="button">
           <button
             (click)="deleteRow.emit(row)"
             class="btn-clear"
@@ -70,7 +94,7 @@
         </td>
         }
         @if(this.includeCustomButton() && columns().length > 0) {
-        <td>
+        <td class="button">
           <button
             (click)="rowItem.emit(row)"
             class="btn-clear"

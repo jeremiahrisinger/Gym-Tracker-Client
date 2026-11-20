@@ -15,11 +15,12 @@ import { Exercise } from '../../models/exercise';
 import { Tabs } from '../../../common/components/tabs/tabs';
 import { TabItem } from '../../../common/models/tab-item';
 import { SectionHeader } from '../../../common/components/section-header/section-header';
+import { Input } from '../../../common/components/input/input';
 
 
 @Component({
-  imports: [FormsModule, Table, Tabs, PageTitle, Error, SectionHeader],
-  providers: [DatePipe],
+  imports: [FormsModule, Table, Tabs, PageTitle, Error, SectionHeader, Input],
+  providers: [DatePipe],  
   selector: 'app-workout-tracker',
   styleUrl: './workout-tracker.css',
   templateUrl: './workout-tracker.html',
@@ -31,13 +32,45 @@ export class WorkoutTracker implements OnInit {
 
   tableColumns: TableColumn[] = [
     { key: 'setNumber', label: 'Set' },
-    { key: 'completed', label: 'Status', useMatIcon: true, transform: (value) => value ? 'check_circle' : 'cancel ' },
-    { key: 'target', label: 'Target', transform: (value) => { if (value) { return `${value.reps} @ ${value.weight}lbs RPE: ${value.rpe} Pause: ${value.pauseTop} | ${value.pauseMiddle} | ${value.pauseBottom} Tempo: ${value.ecentricTempo} | ${value.concentricTempo}` } else { return `N/A` } } },
-    { key: 'actual', label: 'Reps', transform: (value) => value.reps || 0 },
-    { key: 'actual', label: 'Weight', transform: (value) => `${value.weight || 0} lbs` },
-    { key: 'actual', label: 'RPE', transform: (value) => value.rpe || 1 },
-    { key: 'actual', label: 'Pauses', transform: (value) => `${value.pauseTop || 0}" | ${value.pauseMiddle || 0}" | ${value.pauseBottom || 0}"` },
-    { key: 'actual', label: 'Tempo', transform: (value) => `${value.ecentricTempo || 0}" | ${value.concentricTempo || 0}"` },
+    { 
+      key: 'completed', 
+      label: 'Status', 
+      help: 'A circle with an X means the set is incomplete, a cirlce with a checkmark mean the set is complete.',
+      useMatIcon: true, 
+      transform: (value) => value ? 'check_circle' : 'cancel ' },
+    { 
+      key: 'target', 
+      label: 'Target', 
+      help: 'The reps, weight, pause, and tempo in the programmed set.',
+      transform: (value) => { if (value) { return `${value.reps} @ ${value.weight}lbs RPE: ${value.rpe} Pause: ${value.pauseTop} | ${value.pauseMiddle} | ${value.pauseBottom} Tempo: ${value.ecentricTempo} | ${value.concentricTempo}` } else { return `N/A` } } },
+    { 
+      key: 'actual', 
+      label: 'Reps', 
+      help: 'The number of whole reps completed in this set.',
+      transform: (value) => value.reps || 0 
+    },
+    { 
+      key: 'actual', 
+      label: 'Weight', 
+      transform: (value) => `${value.weight || 0} lbs` 
+    },
+    { 
+      key: 'actual', 
+      label: 'RPE', 
+      help:'Rate of Perceived Exertion (Rating of Perceived Effort) is a subjective scale (1-10) used to measure how hard your body works during physical activity, exercise, or training.',
+      transform: (value) => value.rpe || 1 },
+    { 
+      key: 'actual', 
+      label: 'Pauses', 
+      help: 'Pause is the number of seconds you staticly hold the exercise at the top, middle, or bottom of the rep. Top | Middle | Bottom',
+      transform: (value) => `${value.pauseTop || 0}" | ${value.pauseMiddle || 0}" | ${value.pauseBottom || 0}"` 
+    },
+    { 
+      key: 'actual', 
+      label: 'Tempo', 
+      help: 'Eccentric tempo is the number of seconds spent lowering or resisting a weight as a muscle lengthens, while concentric tempo is the number of seconds spent lifting or pushing a weight as a muscle shortens. Ecentric | Concentric',
+      transform: (value) => `${value.ecentricTempo || 0}" | ${value.concentricTempo || 0}"` 
+    },
   ];
 
   workoutId = input.required<string>();

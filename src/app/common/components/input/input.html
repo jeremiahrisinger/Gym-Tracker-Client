@@ -1,0 +1,24 @@
+<div [class]="'form-group ' + size()">
+  <label for="name()">
+    @if(required()){
+      *
+    }
+    {{label()}}
+    @if(helpText()){
+    <mat-icon
+      title="{{helpText()}}"
+      style="font-size: 18px; margin-bottom:-10px;"
+    >help_outline
+    </mat-icon>
+    }
+  </label>
+  <input
+    [type]="type()"
+    id="{{name()}}"
+    name="{{name()}}"
+    [(ngModel)]="value"
+    [required]="required()"
+    [placeholder]="placeholder()"
+    [min]="min()"
+  />
+</div>

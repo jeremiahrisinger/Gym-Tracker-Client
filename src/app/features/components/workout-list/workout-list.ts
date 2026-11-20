@@ -8,10 +8,11 @@ import { TableColumn } from '../../../common/models/table-column';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ApiResponse } from '../../../core/models/api-response';
+import { Input } from '../../../common/components/input/input';
 
 
 @Component({
-  imports: [PageTitle, FormsModule, Error, Table],
+  imports: [PageTitle, FormsModule, Error, Table, Input],
   selector: 'app-workout-list',
   styleUrl: './workout-list.css',
   templateUrl: './workout-list.html',
@@ -68,6 +69,8 @@ export class WorkoutList implements OnInit {
     this.workoutService.createWorkout(workout).subscribe({
       next: (response: ApiResponse<Workout>) => {
         this.loadWorkouts();
+        this.changeDetectorRef.detectChanges();
+
       },
       error: (err) => {
         this.errors = [err.error.message];
@@ -78,6 +81,10 @@ export class WorkoutList implements OnInit {
   }
 
   deleteWorkout(workout: Workout): void {
+    const confirmDelete = confirm('Are you absolutely sure you want to delete this full workout? This cannot be undone.');
+
+    if (!confirmDelete) return;
+
     this.workoutService.deleteWorkout(workout).subscribe({
       next: (response: ApiResponse<any>) => {
         this.loadWorkouts();

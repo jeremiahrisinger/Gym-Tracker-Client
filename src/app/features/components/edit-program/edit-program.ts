@@ -9,9 +9,11 @@ import { TableColumn } from '../../../common/models/table-column';
 import { FormsModule } from '@angular/forms';
 import { Exercise } from '../../models/exercise';
 import { Router, RouterLink } from '@angular/router';
+import { Input } from '../../../common/components/input/input';
+import { SectionHeader } from '../../../common/components/section-header/section-header';
 
 @Component({
-  imports: [PageTitle, Error, Table, FormsModule, RouterLink],
+  imports: [PageTitle, Error, Table, FormsModule, RouterLink, Input, SectionHeader],
   selector: 'app-edit-program',
   styleUrl: './edit-program.css',
   templateUrl: './edit-program.html',

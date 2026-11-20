@@ -5,9 +5,10 @@ import { Router } from '@angular/router';
 import { Error } from '../../../common/error/error';
 import { ApiResponse } from '../../../core/models/api-response';
 import { UserService } from '../../services/user-service';
+import { Input } from '../../../common/components/input/input';
 
 @Component({
-  imports: [FormsModule, Error],
+  imports: [FormsModule, Error, Input],
   selector: 'app-account',
   styleUrl: './account.css',
   templateUrl: './account.html',
