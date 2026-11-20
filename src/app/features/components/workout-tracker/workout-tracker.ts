@@ -1,12 +1,11 @@
 import { Component, inject, OnInit, ChangeDetectorRef, input, computed, signal } from '@angular/core';
 import { Set } from '../../models/set';
-import { LiftingSetService } from '../../services/lifting-set-service';
 import { FormsModule } from '@angular/forms';
 import { Table } from '../../../common/components/table/table';
 import { TableColumn } from '../../../common/models/table-column';
 import { WorkoutService } from '../../services/workout-service';
 import { Workout } from '../../models/workout';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { PageTitle } from '../../../common/components/page-title/page-title';
 import { Error } from '../../../common/error/error';
@@ -16,7 +15,6 @@ import { Exercise } from '../../models/exercise';
 import { Tabs } from '../../../common/components/tabs/tabs';
 import { TabItem } from '../../../common/models/tab-item';
 import { SectionHeader } from '../../../common/components/section-header/section-header';
-import { MatIcon } from '@angular/material/icon';
 
 
 @Component({
@@ -28,7 +26,6 @@ import { MatIcon } from '@angular/material/icon';
 })
 export class WorkoutTracker implements OnInit {
   private workoutService = inject(WorkoutService);
-  private datePipe = inject(DatePipe);
   private changeDetectorRef = inject(ChangeDetectorRef);
   private router = inject(Router);
 
@@ -117,7 +114,6 @@ export class WorkoutTracker implements OnInit {
   }
 
   resetActiveExercise(tabIndex: number) {
-    console.log(tabIndex)
     this.tabItems = computed<TabItem[]>(() =>
       this.workout.exercises.map((ex) => ({
         id: ex._id || 0,
@@ -139,7 +135,6 @@ export class WorkoutTracker implements OnInit {
     this.workoutService.getWorkoutById(this.workoutId()).subscribe({
       next: (response: ApiResponse<Workout>) => {
         if (response.data) {
-          console.log(response.data)
           this.workout = response.data;
 
           this.resetActiveExercise(0);
@@ -173,13 +168,9 @@ export class WorkoutTracker implements OnInit {
   }
 
   addExercise(): void {
-
-    console.log(this.workout)
-    console.log(this.newExercise)
     const sameExercise = this.workout.exercises.find(
       e => e.name.toLowerCase() === this.newExercise.name.toLowerCase()
     );
-    console.log(sameExercise);
     if (sameExercise) {
       this.resetActiveExercise(this.workout.exercises.indexOf(sameExercise));
       this.changeDetectorRef.detectChanges();
@@ -204,7 +195,6 @@ export class WorkoutTracker implements OnInit {
   }
 
   editSetInExercise(metric: Set) {
-    console.log(metric)
     this.newSet = metric;
     if (this.newSet.actual) {
       this.newMetric = this.newSet.actual;
@@ -276,7 +266,6 @@ export class WorkoutTracker implements OnInit {
   updateSetInExercise(exercise: Exercise, newMetric: Metric): void {
     this.newSet.actual = newMetric;
     this.newSet.completed = isMetricMatch(this.newSet.target, this.newSet.actual);
-    console.log(this.newSet);
 
     const updatedSets = exercise.sets.map(s => s._id === this.newSet._id ? this.newSet : s);
     exercise.sets = updatedSets;

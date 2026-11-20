@@ -61,7 +61,6 @@ export class ProgramList implements OnInit {
       next: (response: ApiResponse<Program[]>) => {
         if (response.data) {
           this.programs = response.data;
-          console.log(this.programs)
           this.changeDetectorRef.detectChanges();
         }
       },
@@ -100,7 +99,6 @@ export class ProgramList implements OnInit {
       createdAt: new Date(),
       updatedAt: new Date()
     };
-    console.log('Starting workout for program day:', this.newWorkout);
     this.createNewWorkout(programId);
   }
 
@@ -108,7 +106,6 @@ export class ProgramList implements OnInit {
     this.workoutService.createWorkout(this.newWorkout, programId).subscribe({
       next: (response: ApiResponse<Workout>) => {
         if (response.data) {
-          console.log(response);
           this.newWorkout = response.data;
           this.changeDetectorRef.detectChanges();
           this.router.navigate(['/tracker', response.data._id]);
@@ -129,7 +126,6 @@ export class ProgramList implements OnInit {
     }
     programDay.workoutCount++;
 
-    console.log(programDay)
     this.programService.updateProgramDay(programId, programDay).subscribe({
       next: (response: ApiResponse<ProgramDay>) => {
         this.loadPrograms();

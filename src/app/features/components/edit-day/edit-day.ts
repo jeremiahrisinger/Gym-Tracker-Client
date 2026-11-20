@@ -122,7 +122,6 @@ export class EditDay implements OnInit {
   }
 
   resetActiveExercise(tabIndex: number) {
-    console.log(tabIndex)
     this.tabItems = computed<TabItem[]>(() =>
       this.programDay.exercises.map((ex) => ({
         id: ex._id || 0,
@@ -144,11 +143,9 @@ export class EditDay implements OnInit {
     this.programService.getProgramDayById(this.programId(), this.dayId()).subscribe({
       next: (response: ApiResponse<ProgramDay>) => {
         if (response.data) {
-          console.log(response.data)
           this.programDay = response.data;
 
           this.resetActiveExercise(0);
-          console.log(this.tabItems)
           this.changeDetectorRef.detectChanges();
         }
       },
@@ -179,13 +176,9 @@ export class EditDay implements OnInit {
   }
 
   addExercise(): void {
-
-    console.log(this.programDay)
-    console.log(this.newExercise)
     const sameExercise = this.programDay.exercises.find(
       e => e.name.toLowerCase() === this.newExercise.name.toLowerCase()
     );
-    console.log(sameExercise);
     if (sameExercise) {
       this.resetActiveExercise(this.programDay.exercises.indexOf(sameExercise));
       this.changeDetectorRef.detectChanges();
@@ -210,7 +203,6 @@ export class EditDay implements OnInit {
   }
 
   editSetInExercise(metric: Set) {
-    console.log(metric)
     this.newSet = metric;
     if (this.newSet.target) {
       this.newMetric = this.newSet.target;
@@ -240,16 +232,13 @@ export class EditDay implements OnInit {
   }
 
   addSetToExercise(exercise: Exercise, newMetric: Metric): void {
-    console.log(newMetric)
     this.newSet.target = newMetric;
     this.newSet.setNumber = exercise.sets.length + 1;
     exercise.sets.push(this.newSet);
-    console.log(exercise)
     this.programService.updateExerciseInProgramDay(this.programId(), this.dayId(), exercise).subscribe({
       next: (response: ApiResponse<ProgramDay>) => {
         if (response.data) {
           this.programDay = response.data;
-          console.log(this.programDay)
           this.newMetric = {
             reps: 0,
             weight: 0,

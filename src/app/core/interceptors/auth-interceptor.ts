@@ -11,7 +11,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const user = authService.currentUser();
 
   if (user && user.token) {
-    console.log(user)
     req = req.clone({
       setHeaders: {
         Authorization: `Bearer ${user.token}`,

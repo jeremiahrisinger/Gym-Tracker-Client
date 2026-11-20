@@ -56,7 +56,6 @@ export class EditProgram implements OnInit {
       next: (response: ApiResponse<Program>) => {
         if (response.data) {
           this.program = response.data;
-          console.log(this.program);
           this.changeDetectorRef.detectChanges();
         }
       },
@@ -101,7 +100,6 @@ export class EditProgram implements OnInit {
   }
 
   editDayInProgram(day:ProgramDay){
-    console.log(day)
     this.router.navigate(['/edit-program', this.program._id, day._id])
   }
 }

@@ -67,8 +67,7 @@ export class WorkoutList implements OnInit {
   createWorkout(workout: Workout): void {
     this.workoutService.createWorkout(workout).subscribe({
       next: (response: ApiResponse<Workout>) => {
-        console.log('Workout created successfully:', response);
-        this.loadWorkouts(); // Reload workouts after creation
+        this.loadWorkouts();
       },
       error: (err) => {
         this.errors = [err.error.message];
@@ -81,8 +80,7 @@ export class WorkoutList implements OnInit {
   deleteWorkout(workout: Workout): void {
     this.workoutService.deleteWorkout(workout).subscribe({
       next: (response: ApiResponse<any>) => {
-        console.log('Workout deleted successfully:', response);
-        this.loadWorkouts(); // Reload workouts after deletion
+        this.loadWorkouts();
       },
       error: (err) => {
         this.errors = [err.error.message];

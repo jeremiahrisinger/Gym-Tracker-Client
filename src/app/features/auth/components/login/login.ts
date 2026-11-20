@@ -27,7 +27,6 @@ export class Login {
   onLogin() {
     this.loginService.login(this.credentials).subscribe({
       next: (response: ApiResponse<User>) => {
-        console.log('Logged in profile saved:', response.data);
         this.router.navigate(['/workouts']);
       },
       error: (err) => {

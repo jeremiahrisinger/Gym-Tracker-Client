@@ -75,7 +75,6 @@ export class WorkoutService {
 
   updateExerciseInWorkout(workout: Workout, updatedExercise: Exercise): Observable<ApiResponse<Workout>> {
     const url = `${this.apiUrl}/${workout._id}/exercises/${updatedExercise._id}`;
-    console.log(updatedExercise);
     return this.http.patch<ApiResponse<Workout>>(url, updatedExercise);
   }
 }

@@ -29,10 +29,8 @@ export class SignUp {
   };
 
   onSignUp() {
-    console.log('User submitted:', this.newUser);
     this.loginService.signup(this.newUser).subscribe({
       next: (response: ApiResponse<User>) => {
-        console.log('Logged in profile saved:', response.data);
         this.router.navigate(['/login']);
       },
       error: (err) => {
