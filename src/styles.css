@@ -15,6 +15,7 @@ body {
 
     --background-color: #121212;
     --surface-color: #1E1E1E;
+    --surface-color-light: #303030;
     --electric-blue: #3B82F6;
     --amber-dark: #B45309;
     --amber: #F59E0B;
@@ -55,7 +56,7 @@ body {
 
     --error-color-background: rgba(255, 0, 0, 0.2);
     --error-color: #EF4444;
-
+    --error-color-darker: #c43232;
 }
 
 .box-shadow-light {
@@ -121,7 +122,7 @@ body {
 
 .form-group.small {
     flex: 1;
-    min-width: 100px;
+    min-width: 80px;
 }
 
 .form-group.large {
@@ -150,10 +151,18 @@ body {
     outline: none;
 }
 
-.btn-row {
+.btn-row-rev {
     width: 100%;
     display: flex;
     flex-direction: row-reverse;
+    gap: 1rem;
+    padding-top: 2rem;
+}
+
+.btn-row {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
     gap: 1rem;
     padding-top: 2rem;
 }
@@ -219,7 +228,7 @@ body {
 }
 
 .btn-red:disabled {
-    background-color: var(--error-color-lightest);
+    background-color: grey;
     cursor: not-allowed;
 }
 

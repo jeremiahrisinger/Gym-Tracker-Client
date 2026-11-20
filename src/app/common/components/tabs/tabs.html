@@ -1,0 +1,31 @@
+<div class="common-tabs-container">
+  <h3>{{title()}}</h3>
+
+  <div
+    class="tab-list"
+    role="tablist"
+  >
+    @for (tab of tabs(); track tab.id; let i = $index) {
+
+    <button
+      type="button"
+      role="tab"
+      [class.active]="activeId() === tab.id"
+      (click)="selectTab(tab)"
+      class="tab-btn"
+    >
+      <span class="tab-label">{{ tab.label }}</span>
+      @if (tab.badge !== undefined) {
+      <span class="tab-badge">| {{ tab.badge }}</span>
+      }
+    </button>
+    }
+  </div>
+
+  <div
+    class="tab-content-panel"
+    role="tabpanel"
+  >
+    <ng-content></ng-content>
+  </div>
+</div>

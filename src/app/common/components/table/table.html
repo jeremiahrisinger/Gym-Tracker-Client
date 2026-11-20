@@ -33,9 +33,17 @@
         <!-- Uses index-signature access to read values dynamically -->
         <td>
           @if (col.transform) {
-          {{ col.transform(row[col.key]) }}
+            @if(col.useMatIcon){
+            <mat-icon>{{ col.transform(row[col.key]) }}</mat-icon>
+            } @else {
+            {{ col.transform(row[col.key]) }}
+            }
           } @else {
-          {{ row[col.key] }}
+            @if(col.useMatIcon){
+            <mat-icon>{{ row[col.key] }}</mat-icon>
+            } @else {
+            {{ row[col.key] }}
+            }
           }
         </td>
         }
@@ -66,7 +74,8 @@
           <button
             (click)="rowItem.emit(row)"
             class="btn-clear"
-            title="{{ customButtonLabel() }}">
+            title="{{ customButtonLabel() }}"
+          >
             @if(customButtonIcon()) {
             <mat-icon>{{ customButtonIcon() }}</mat-icon>
             }

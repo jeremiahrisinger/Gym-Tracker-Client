@@ -1,0 +1,54 @@
+.common-tabs-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* The horizontal bar holding the tabs */
+.tab-list {
+  display: flex;
+  gap: 4px;
+  border-bottom: 2px solid var(--surface-color); /* The baseline anchor line */
+  padding-left: 4px;
+}
+
+.tab-content-panel {
+  background-color: var(--surface-color-light);
+  border: 1px solid var(--surface-color-light);
+  border-top: none;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  padding: 20px;
+}
+
+.tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--muted-text-color);
+  background-color: var(--surface-color); /* Inactive tab background */
+  border: 1px solid var(--surface-color-light);
+  border-bottom: none;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: #fff;
+    background-color: rgba(255, 255, 255, .5);
+  }
+
+  /* Active Tab State */
+  &.active {
+    color: var(--text-color);
+    background-color: var(--surface-color-light);
+    border-color: var(--surface-color-light);
+    border-bottom: 2px solid var(--surface-color-light); 
+    margin-bottom: -2px; 
+    font-weight: 600;
+  }
+}

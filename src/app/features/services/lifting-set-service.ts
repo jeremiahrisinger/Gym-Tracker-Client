@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
-import { LiftingSet } from '../models/lifting-set';
+import { Set } from '../models/set';
 import { AuthService } from '../auth/services/auth-service';
 import { BASE_URL } from '../../common/constants';
 import { ApiResponse } from '../../core/models/api-response';
@@ -14,27 +14,18 @@ export class LiftingSetService {
   private loginService = inject(AuthService);
 
 
-  getSets(): Observable<ApiResponse<LiftingSet[]>> {
-    const params = this.loginService.getUserIdAsParam();
+  getSets(): Observable<ApiResponse<Set[]>> {
 
-    return this.http.get<ApiResponse<LiftingSet[]>>(this.apiUrl, { params });
+    return this.http.get<ApiResponse<Set[]>>(this.apiUrl);
   }
 
-  getSetsByExercise(exercise: string): Observable<ApiResponse<LiftingSet[]>> {
-    const params = this.loginService.getUserIdAsParam()
-      .set('exercise', exercise);
+  getSetsByExercise(exercise: string): Observable<ApiResponse<Set[]>> {
+    const params = new HttpParams().set('exercise', exercise);
 
-    return this.http.get<ApiResponse<LiftingSet[]>>(this.apiUrl, { params });
+    return this.http.get<ApiResponse<Set[]>>(this.apiUrl, { params });
   }
 
-  addSet(newSet: LiftingSet): Observable<ApiResponse<LiftingSet>> {
-    const activeUser = this.loginService.currentUser();
-    console.log(activeUser);
-    newSet.userId = activeUser?._id
-    const payload = {
-      ...newSet
-    };
-    console.log(payload);
-    return this.http.post<ApiResponse<LiftingSet>>(this.apiUrl, payload);
+  addSet(newSet: Set): Observable<ApiResponse<Set>> {
+    return this.http.post<ApiResponse<Set>>(this.apiUrl, newSet);
   }
 }

@@ -1,72 +1,54 @@
 <div class="main-container">
-  <app-page-title [title]="'Edit Program'"></app-page-title>
+  <app-page-title [title]="'Edit ' + program.name"></app-page-title>
   <app-error [errorMessages]="errors"></app-error>
 
-  <app-common-table
-    [name]="program?.name"
-    [columns]="tableColumns"
-    [data]="program?.programDays"
-    [emptyMessage]="'No days created yet.'"
-    [includeDeleteButton]="true"
-    [includeEditButton]="true"
-    (deleteRow)="deleteProgramDay($event)"
-    (editRow)="editProgramDay($event)"
-  >
-  </app-common-table>
-  <br />
-  <hr class="divider" />
-  <br />
-  <!-- 📋 INPUT FORM SECTION -->
   <form
-    (ngSubmit)="addProgramDay()"
+    (ngSubmit)="addDay()"
     #setForm="ngForm"
     class="form"
   >
-    <div class="form-group small">
-      <label for="name">Program Day Name</label>
+    <div class="form-group large">
+      <label for="name">Exercise Name</label>
       <input
         type="text"
         id="name"
         name="name"
-        [(ngModel)]="newProgramDay.name"
+        [(ngModel)]="newDay.name"
         required
-        placeholder="e.g., Push Day, Pull Day, Leg Day"
+        placeholder="e.g., Chest Day, Push Day 2, Squat Day"
+        min="0"
       />
     </div>
-
-    <div class="btn-row">
+    <div class="btn-row-rev">
       <button
         type="submit"
         [disabled]="!setForm.valid"
         class="btn-submit"
       >
-        Add Program Day
+        Add Day
       </button>
-      <button
-        type="button"
-        class="btn-modify"
-      >
-        Clear
-      </button>
-      <button
-        type="button"
-        class="btn-modify"
-        [routerLink]="['/programs']"
-      >
-        All Programs
-      </button>
-      @if(this.program?.programDays == null || this.program.programDays?.length==0){
-      <button
-        type="button"
-        class="btn-red"
-        title="Delete Program"
-        (click)="this.deleteProgram()"
-      >
-        Delete Program
-      </button>
-      }
     </div>
 
   </form>
+  <app-table
+    [name]="program.name"
+    [columns]="tableColumns"
+    [data]="program.days"
+    [emptyMessage]="'No days in this program yet.'"
+    [includeDeleteButton]="true"
+    [includeEditButton]="true"
+    (deleteRow)="deleteDayFromProgram(program, $event)"
+    (editRow)="editDayInProgram($event)"
+  >
+  </app-table>
 
+  <div class="btn-row">
+    <button
+      type="button"
+      class="btn-modify"
+      [routerLink]="['/programs']"
+    >
+      Back
+    </button>
+  </div>
 </div>
