@@ -8,23 +8,22 @@ import { AuthService } from '../auth/services/auth-service';
 
 @Service()
 export class UserService {
-  private http = inject(HttpClient);
-  private loginService = inject(AuthService);
-  
+  private http = inject(HttpClient);  
   private apiUrl = BASE_URL + '/users';
 
   getUser(): Observable<ApiResponse<User>> {
-    const params = this.loginService.getUserIdAsParam();
-
-    return this.http.get<ApiResponse<User>>(this.apiUrl, { params });
+    return this.http.get<ApiResponse<User>>(this.apiUrl);
   }
 
   updateUser(updatedUser: User, confirmPassword: string): Observable<ApiResponse<User>> {
-    const userId = this.loginService.getUserId();
     const payload = {
       ...updatedUser,
       confirmPassword: confirmPassword
     }
-    return this.http.put<ApiResponse<User>>(`${this.apiUrl}/${userId}`, payload);
+    return this.http.patch<ApiResponse<User>>(`${this.apiUrl}/${updatedUser._id}`, payload);
+  }
+
+  deleteUser(deletedUser: User): Observable<ApiResponse<User>> {
+    return this.http.delete<ApiResponse<User>>(`${this.apiUrl}/${deletedUser._id}`);
   }
 }

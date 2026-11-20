@@ -1,15 +1,15 @@
 import { Component, input, output } from '@angular/core';
-import { TableColumn } from '../models/table-column';
+import { TableColumn } from '../../models/table-column';
 import { MatIconModule } from '@angular/material/icon';
 
 
 @Component({
   imports: [MatIconModule],
-  selector: 'app-common-table',
-  styleUrl: './common-table.css',
-  templateUrl: './common-table.html',
+  selector: 'app-table',
+  styleUrl: './table.css',
+  templateUrl: './table.html',
 })
-export class CommonTable {
+export class Table {
   columns = input.required<TableColumn[]>();
   data = input.required<any[]>();
   emptyMessage = input<string>('No data available');

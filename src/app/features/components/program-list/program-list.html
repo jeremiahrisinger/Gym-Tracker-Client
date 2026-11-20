@@ -1,5 +1,5 @@
 <div class="main-container">
-  <app-page-title [title]="'Start New Program'"></app-page-title>
+  <app-page-title [title]="'Create New Program'"></app-page-title>
   <app-error [errorMessages]="errors"></app-error>
 
 
@@ -20,7 +20,7 @@
       />
     </div>
 
-    <div class="btn-row">
+    <div class="btn-row-rev">
       <button
         type="submit"
         [disabled]="!setForm.valid"
@@ -37,17 +37,17 @@
 
   @for (p of programs; track $index) {
 
-  <app-common-table
+  <app-table
     [name]="p.name"
     [columns]="tableColumns"
-    [data]="p.programDays"
+    [data]="p.days"
     [emptyMessage]="'No days in this program yet!'"
     [includeCustomButton]="true"
     [customButtonLabel]="'Start Workout'"
     [customButtonIcon]="'start'"
-    (rowItem)="startWorkout($event)"
-  ></app-common-table>
-  <div class="btn-row">
+    (rowItem)="startWorkout(p._id!, $event)"
+  ></app-table>
+  <div class="btn-row-rev">
     <button
       class="btn-modify"
       [routerLink]="['/edit-program', p._id]"

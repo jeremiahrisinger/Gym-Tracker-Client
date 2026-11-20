@@ -1,0 +1,217 @@
+<div class="main-container">
+  <app-page-title [title]="'Edit ' + programDay.name"></app-page-title>
+  <app-error [errorMessages]="errors"></app-error>
+
+  <form
+    (ngSubmit)="addExercise()"
+    #setForm="ngForm"
+    class="form"
+  >
+
+
+    <div class="form-group large">
+      <label for="name">Exercise Name</label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        [(ngModel)]="newExercise.name"
+        required
+        placeholder="e.g., Bench Press, Squat, Deadlift"
+        min="0"
+      />
+    </div>
+    <div class="btn-row-rev">
+      <button
+        type="submit"
+        [disabled]="!setForm.valid"
+        class="btn-submit"
+      >
+        Add Exercise
+      </button>
+    </div>
+
+  </form>
+
+  <br />
+  @if(programDay.exercises.length > 0){
+  <app-section-header [header]="'Exercises'"></app-section-header>
+  <app-tabs
+    [tabs]="tabItems()"
+    [activeId]="getActiveExercise()._id || programDay.exercises[0]._id"
+    (tabChange)="activeTab.set($event)"
+  >
+    @if (getActiveExercise(); as current) {
+    <app-table
+      [name]="current.name"
+      [columns]="tableColumns"
+      [data]="current.sets"
+      [emptyMessage]="'No exercise sets recorded yet.'"
+      [includeDeleteButton]="!editMode"
+      [includeEditButton]="!editMode"
+      [includeCustomButton]="true"
+      [customButtonLabel]="'Duplicate'"
+      [customButtonIcon]="'content_copy'"
+      (rowItem)="addSetToExercise(current, $event.target)"
+      (deleteRow)="deleteSetFromExercise(current,$event)"
+      (editRow)="editSetInExercise($event)"
+    >
+    </app-table>
+
+    <br />
+
+    @if(editMode){
+    <app-section-header [header]="'Edit Set ' + this.newSet.setNumber"></app-section-header>
+
+    } @else {
+    <app-section-header [header]="'Add New Set'"></app-section-header>
+    }
+    <!-- 📋 INPUT FORM SECTION -->
+    <form
+      (ngSubmit)="addSetToExercise(current, newMetric)"
+      #setForm="ngForm"
+      class="form"
+    >
+
+
+      <div class="form-group small">
+        <label for="reps">Reps</label>
+        <input
+          type="number"
+          id="reps"
+          name="reps"
+          [(ngModel)]="newMetric.reps"
+          required
+          min="0"
+        />
+      </div>
+
+      <div class="form-group small">
+        <label for="weight">Weight (lbs)</label>
+        <input
+          type="number"
+          id="weight"
+          name="weight"
+          [(ngModel)]="newMetric.weight"
+          required
+          min="0"
+        />
+      </div>
+
+      <div class="form-group small">
+        <label for="rateOfPerceivedExertion">RPE</label>
+        <input
+          type="number"
+          id="rateOfPerceivedExertion"
+          name="rateOfPerceivedExertion"
+          [(ngModel)]="newMetric.rpe"
+          required
+          min="1"
+        />
+      </div>
+
+      <div class="form-group small">
+        <label for="pauseTop">Pause Top</label>
+        <input
+          type="number"
+          id="pauseTop"
+          name="pauseTop"
+          [(ngModel)]="newMetric.pauseTop"
+          required
+          min="0"
+        />
+      </div>
+
+      <div class="form-group small">
+        <label for="pauseMiddle">Pause Middle</label>
+        <input
+          type="number"
+          id="pauseMiddle"
+          name="pauseMiddle"
+          [(ngModel)]="newMetric.pauseMiddle"
+          required
+          min="0"
+        />
+      </div>
+
+      <div class="form-group small">
+        <label for="pauseBottom">Pause Bottom</label>
+        <input
+          type="number"
+          id="pauseBottom"
+          name="pauseBottom"
+          [(ngModel)]="newMetric.pauseBottom"
+          required
+          min="0"
+        />
+      </div>
+
+      <div class="form-group small">
+        <label for="ecentricTempo">Ecentric Tempo</label>
+        <input
+          type="number"
+          id="ecentricTempo"
+          name="ecentricTempo"
+          [(ngModel)]="newMetric.ecentricTempo"
+          required
+          min="0"
+        />
+      </div>
+
+      <div class="form-group small">
+        <label for="concentricTempo">Conc. Tempo</label>
+        <input
+          type="number"
+          id="concentricTempo"
+          name="concentricTempo"
+          [(ngModel)]="newMetric.concentricTempo"
+          required
+          min="0"
+        />
+      </div>
+      <div class="btn-row-rev">
+        @if(!editMode){
+        <button
+          type="submit"
+          [disabled]="!setForm.valid"
+          class="btn-submit"
+        >
+          Add Set
+        </button>
+        }
+        @else {
+        <button
+          type="button"
+          [disabled]="!setForm.valid"
+          class="btn-submit"
+          (click)="updateSetInExercise(current, newMetric)"
+        >
+          Done
+        </button>
+        }
+      </div>
+
+    </form>
+
+    <div class="btn-row-rev">
+      <button
+        type="button"
+        (click)="deleteExercise(current)"
+        class="btn-red"
+      >
+        Delete Exercise
+      </button>
+    </div>
+    }
+  </app-tabs>
+  <div class="btn-row">
+    <button
+      type="button"
+      class="btn-modify"
+      [routerLink]="['/edit-program', programId()]"
+    >
+      Back
+    </button>
+  </div>
+  }
+</div>

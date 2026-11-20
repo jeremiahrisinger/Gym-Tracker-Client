@@ -5,6 +5,7 @@ import { AuthService } from '../auth/services/auth-service';
 import { Observable } from 'rxjs';
 import { Program, ProgramDay } from '../models/program';
 import { ApiResponse } from '../../core/models/api-response';
+import { Exercise } from '../models/exercise';
 
 @Service()
 export class ProgramService {
@@ -12,100 +13,76 @@ export class ProgramService {
   private apiUrl = BASE_URL + '/programs';
   private loginService = inject(AuthService);
 
+  // Program Routes
   getPrograms(): Observable<ApiResponse<Program[]>> {
-    const params = this.loginService.getUserIdAsParam();
+    return this.http.get<ApiResponse<Program[]>>(this.apiUrl);
+  }
 
-    return this.http.get<ApiResponse<Program[]>>(this.apiUrl, { params});
+  createNewProgram(newProgram: Program): Observable<ApiResponse<Program>> {
 
+    return this.http.post<ApiResponse<Program>>(this.apiUrl, newProgram);
   }
 
   getProgramById(programId: string): Observable<ApiResponse<Program>> {
     const url = `${this.apiUrl}/${programId}`;
-    const params = this.loginService.getUserIdAsParam();
 
-    return this.http.get<ApiResponse<Program>>(url, { params });
+    return this.http.get<ApiResponse<Program>>(url);
   }
 
-  getProgramDayByName(programId: string, programDayName: string): Observable<ApiResponse<ProgramDay>> {
-    const url = `${this.apiUrl}/${programId}/days/${programDayName}`;
-    const params = this.loginService.getUserIdAsParam();
+  updateProgramById(updatedProgram: Program): Observable<ApiResponse<Program>> {
+    const url = `${this.apiUrl}/${updatedProgram._id}`;
 
-    return this.http.get<ApiResponse<ProgramDay>>(url, { params });
+    return this.http.patch<ApiResponse<Program>>(url, updatedProgram);
   }
 
   deleteProgramById(programId: string): Observable<ApiResponse<Program>> {
-    const url = `${this.apiUrl}/delete/${programId}`;
-    const params = this.loginService.getUserIdAsParam();
+    const url = `${this.apiUrl}/${programId}`;
 
-    return this.http.delete<ApiResponse<Program>>(url, { params });
+    return this.http.delete<ApiResponse<Program>>(url);
   }
 
-  createNewProgram(newProgram: Program): Observable<ApiResponse<Program>> {
-    const activeUser = this.loginService.currentUser();
-    newProgram.userId = activeUser?._id
-    const payload = {
-      ...newProgram
-    };
-    console.log(payload);
-    return this.http.post<ApiResponse<Program>>(this.apiUrl, payload);
+  // Program Day Routes
+  addDayToProgram(programId: string, newProgramDay: ProgramDay): Observable<ApiResponse<Program>> {
+    const url = `${this.apiUrl}/${programId}/days`;
+
+    return this.http.post<ApiResponse<Program>>(url, newProgramDay);
+  }
+
+  getProgramDayById(programId: string, dayId: string): Observable<ApiResponse<ProgramDay>> {
+    const url = `${this.apiUrl}/${programId}/days/${dayId}`;
+
+    return this.http.get<ApiResponse<ProgramDay>>(url);
   }
 
   updateProgramDay(programId: string, updatedProgramDay: ProgramDay): Observable<ApiResponse<ProgramDay>> {
-    const url = `${this.apiUrl}/${programId}`;
-    const activeUser = this.loginService.currentUser();
-    updatedProgramDay.userId = activeUser?._id
-    const payload = {
-      ...updatedProgramDay
-    };
-    
-    return this.http.put<ApiResponse<ProgramDay>>(url, payload);
+    const url = `${this.apiUrl}/${programId}/days/${updatedProgramDay._id}`;
+
+    return this.http.patch<ApiResponse<ProgramDay>>(url, updatedProgramDay);
   }
 
-  addDayToProgram(programId: string, newProgramDay: ProgramDay): Observable<ApiResponse<ProgramDay>> {
-    const url = `${this.apiUrl}/${programId}/add-day`;
-    const activeUser = this.loginService.currentUser();
-    newProgramDay.userId = activeUser?._id
-    const payload = {
-      ...newProgramDay
-    };
+  removeDayFromProgram(programId: string, day: ProgramDay): Observable<ApiResponse<Program>> {
+    const url = `${this.apiUrl}/${programId}/days/${day._id}`;
 
-    return this.http.patch<ApiResponse<ProgramDay>>(url, payload);
+    return this.http.delete<ApiResponse<Program>>(url);
   }
 
-  removeDayFromProgram(programId: string, day: any) : Observable<ApiResponse<Program>>{
-    const url = `${this.apiUrl}/${programId}/delete-day`;
-    console.log(url);
-    const activeUser = this.loginService.currentUser();
-    const userId = activeUser?._id || '';
 
-    const payload = {
-      ...day,
-      userId
-    };
-    return this.http.patch<ApiResponse<Program>>(url, payload);
+  // Exercise Routes
+  addExerciseToProgramDay(programId: string, dayId: string, newExercise: any): Observable<ApiResponse<ProgramDay>> {
+    const url = `${this.apiUrl}/${programId}/days/${dayId}/exercises`;
+
+    return this.http.post<ApiResponse<ProgramDay>>(url, newExercise);
   }
 
-  addSetToProgramDay(programId: string, programDayId: string, newProgramSet: any): Observable<ApiResponse<ProgramDay>> {
-    const url = `${this.apiUrl}/${programId}/days/${programDayId}/add-set`;
-    const activeUser = this.loginService.currentUser();
-    newProgramSet.userId = activeUser?._id
-    const payload = {
-      ...newProgramSet
-    };
+  removeExerciseFromProgramDay(programId: string, dayId: string, exercise: Exercise): Observable<ApiResponse<ProgramDay>> {
+    const url = `${this.apiUrl}/${programId}/days/${dayId}/exercises/${exercise._id}`;
 
-    return this.http.patch<ApiResponse<ProgramDay>>(url, payload);
+    return this.http.delete<ApiResponse<ProgramDay>>(url);
   }
 
-  removeSetFromProgramDay(programId: string, programDayId: string, set: any): Observable<ApiResponse<ProgramDay>> {
-    const url = `${this.apiUrl}/${programId}/days/${programDayId}/delete-set`;
-    const activeUser = this.loginService.currentUser();
-    const userId = activeUser?._id || '';
+  updateExerciseInProgramDay(programId: string, dayId: string, exercise: Exercise) {
+    const url = `${this.apiUrl}/${programId}/days/${dayId}/exercises/${exercise._id}`;
 
-    const payload = {
-      ...set,
-      userId
-    };
-
-    return this.http.patch<ApiResponse<ProgramDay>>(url, payload);
+    return this.http.patch<ApiResponse<ProgramDay>>(url, exercise);
   }
 }

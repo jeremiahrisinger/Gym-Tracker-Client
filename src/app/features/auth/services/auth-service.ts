@@ -98,10 +98,4 @@ export class AuthService {
     const userId = activeUser?._id || '';
     return userId;
   }
-
-  public getUserIdAsParam(): HttpParams {
-    const params = new HttpParams().set('userId', this.getUserId())
-
-    return params;
-  }
 }

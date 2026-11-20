@@ -1,117 +1,107 @@
-import { ChangeDetectorRef, Component, inject, input } from '@angular/core';
-import { ProgramService } from '../../services/program-service';
-import { DatePipe } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
-import { TableColumn } from '../../../common/models/table-column';
-import { Program, ProgramDay } from '../../models/program';
-import { CommonTable } from '../../../common/common-table/common-table';
-import { FormsModule } from '@angular/forms';
-import { PageTitle } from '../../../common/page-title/page-title';
-import { MatIconModule } from '@angular/material/icon';
+import { ChangeDetectorRef, Component, inject, input, OnInit } from '@angular/core';
+import { PageTitle } from '../../../common/components/page-title/page-title';
 import { Error } from '../../../common/error/error';
+import { Program, ProgramDay } from '../../models/program';
+import { ProgramService } from '../../services/program-service';
 import { ApiResponse } from '../../../core/models/api-response';
+import { Table } from '../../../common/components/table/table';
+import { TableColumn } from '../../../common/models/table-column';
+import { FormsModule } from '@angular/forms';
+import { Exercise } from '../../models/exercise';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
-  imports: [FormsModule, CommonTable, RouterLink, PageTitle, MatIconModule, Error],
-  providers: [DatePipe],
+  imports: [PageTitle, Error, Table, FormsModule, RouterLink],
   selector: 'app-edit-program',
   styleUrl: './edit-program.css',
   templateUrl: './edit-program.html',
 })
-export class EditProgram {
-
+export class EditProgram implements OnInit {
   private programService = inject(ProgramService);
-  private datePipe = inject(DatePipe);
   private changeDetectorRef = inject(ChangeDetectorRef);
   private router = inject(Router);
 
   tableColumns: TableColumn[] = [
-    { key: 'name', label: 'Name', sortable: true, filterable: true },
-    { key: 'createdAt', label: 'Created Date', sortable: true, filterable: false, transform: (value) => this.datePipe.transform(value, 'mediumDate') || '' }
-  ];
-  errors: string[] = [];
-  id = input.required<string>();
+    { key: 'name', label: 'Name' },
+    { key: 'exercises', label: 'Programmed Exercises', transform: (value) => this.getExerciseNames(value)}
+  ]
 
-  newProgramDay: ProgramDay = {
+  getExerciseNames(exercises: Exercise[]): string {
+    return exercises.map(e => e.name).join(", ") || 'N/A';
+  }
+  errors: string[] = [];
+
+  program: Program = {
+    name: 'Untitled Program',
+    days: [],
+    createdAt: new Date,
+    updatedAt: new Date
+  }
+
+  newDay: ProgramDay = {
     name: '',
-    programSets: [],
-    completionCount: 0,
+    exercises:[],
     createdAt: new Date(),
     updatedAt: new Date()
-  };
+  }
 
-  program: any;
+  programId = input.required<string>();
 
   ngOnInit(): void {
     this.loadProgram();
   }
 
   loadProgram(): void {
-    this.programService.getProgramById(this.id()).subscribe({
+    this.programService.getProgramById(this.programId()).subscribe({
       next: (response: ApiResponse<Program>) => {
-        console.log(`response: ${response.message}`);
-        this.program = response.data;
-        this.changeDetectorRef.detectChanges();
+        if (response.data) {
+          this.program = response.data;
+          console.log(this.program);
+          this.changeDetectorRef.detectChanges();
+        }
       },
       error: (err) => {
+        this.errors = [err.error.message];
+        this.changeDetectorRef.detectChanges();
         console.error('Could not load data from Express server:', err);
-        this.errors = [err.error.message];
-        this.changeDetectorRef.detectChanges();
       }
     });
   }
 
-  deleteProgram(): void {
-    const confirmDelete = confirm('Are you absolutely sure you want to delete this program? This cannot be undone.');
-
-    if (!confirmDelete) return;
-
-    this.programService.deleteProgramById(this.id()).subscribe({
-      next: (response: ApiResponse) => {
-        console.log(`response: ${response.message}`);
-        this.router.navigate(['/programs']);
-      },
-      error: (err) => {
-        console.error('Could not load data from Express server:', err);
-        this.errors = [err.error.message];
-        this.changeDetectorRef.detectChanges();
-      }
-    });
-
-  }
-
-  addProgramDay(): void {
-    this.programService.addDayToProgram(this.id(), this.newProgramDay).subscribe({
-      next: (response: ApiResponse) => {
-        this.program.programDays = [...this.program.programDays, response.data];
-        this.changeDetectorRef.detectChanges();
-        this.router.navigate(['/edit-program-day', this.id(), response.data?.addedDay.name]);
-      },
-      error: (err) => {
-        console.error('Could not add new programDay to Express server:', err);
-        this.errors = [err.error.message];
-        this.changeDetectorRef.detectChanges();
-      }
-    });
-  }
-
-  deleteProgramDay(rowItem: any): void {
-    this.programService.removeDayFromProgram(this.id(), rowItem).subscribe({
+  addDay(){
+    this.programService.addDayToProgram(this.programId(), this.newDay).subscribe({
       next: (response: ApiResponse<Program>) => {
-        console.log(`response: ${response.data}`);
-        this.program = response.data;
-        this.changeDetectorRef.detectChanges();
+        if (response.data) {
+          this.program = response.data;
+          this.changeDetectorRef.detectChanges();
+        }
       },
       error: (err) => {
-        console.error('Could not delete day from Express server:', err);
         this.errors = [err.error.message];
         this.changeDetectorRef.detectChanges();
+        console.error('Could not load data from Express server:', err);
       }
-    });
+    })
   }
 
-  editProgramDay(rowItem: any): void {
-    console.log(rowItem);
-    this.router.navigate(['/edit-program-day', this.id(), rowItem.name]);
+  deleteDayFromProgram(program:Program, day:ProgramDay){
+    this.programService.removeDayFromProgram(this.programId(), day).subscribe({
+      next: (response: ApiResponse<Program>) => {
+        if (response.data) {
+          this.program = response.data;
+          this.changeDetectorRef.detectChanges();
+        }
+      },
+      error: (err) => {
+        this.errors = [err.error.message];
+        this.changeDetectorRef.detectChanges();
+        console.error('Could not load data from Express server:', err);
+      }
+    })
+  }
+
+  editDayInProgram(day:ProgramDay){
+    console.log(day)
+    this.router.navigate(['/edit-program', this.program._id, day._id])
   }
 }

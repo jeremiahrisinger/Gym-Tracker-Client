@@ -1,0 +1,46 @@
+<div class="main-container">
+  <app-page-title [title]="'Start New Workout'"></app-page-title>
+  <app-error [errorMessages]="errors"></app-error>
+
+   <form
+    (ngSubmit)="startWorkout()"
+    #setForm="ngForm"
+    class="form"
+  >
+    <div class="form-group small">
+      <label for="WorkoutName">Workout Name</label>
+      <input
+        type="text"
+        id="WorkoutName"
+        name="WorkoutName"
+        [(ngModel)]="newWorkout.name"
+        required
+        placeholder="e.g., Chest and Triceps, Week 4: Back Day"
+      />
+    </div>
+
+    <div class="btn-row-rev">
+      <button
+        type="submit"
+        [disabled]="!setForm.valid"
+        class="btn-submit"
+      >
+        Start New Workout
+      </button>
+    </div>
+  </form>
+
+
+  <app-table
+    [name]="'Workout History'"
+    [columns]="tableColumns"
+    [data]="workouts"
+    [emptyMessage]="'No workouts recorded yet.'"
+    [includeEditButton]="true"
+    [includeDeleteButton]="true"
+    (editRow)="editWorkout($event)"
+    (deleteRow)="deleteWorkout($event)"
+  >
+  </app-table>
+
+</div>

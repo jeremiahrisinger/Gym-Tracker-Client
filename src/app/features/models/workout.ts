@@ -1,10 +1,10 @@
-import { LiftingSet } from "./lifting-set";
+import { Exercise } from "./exercise";
 
 export interface Workout {
-  _id?: number;
-  programDayId: string;
+  _id?: string;
+  programDayId?: string;
+  exercises: Exercise[];
   name: string;
-  sets: LiftingSet[];
   notes: string;
   createdAt: Date;
   updatedAt: Date;

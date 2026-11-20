@@ -1,19 +1,19 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
-import { CommonTable } from '../../../common/common-table/common-table';
+import { Table } from '../../../common/components/table/table';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { ProgramService } from '../../services/program-service';
 import { DatePipe } from '@angular/common';
 import { TableColumn } from '../../../common/models/table-column';
-import { Program } from '../../models/program';
+import { Program, ProgramDay } from '../../models/program';
 import { WorkoutService } from '../../services/workout-service';
 import { Workout } from '../../models/workout';
 import { ApiResponse } from '../../../core/models/api-response';
 import { Error } from '../../../common/error/error';
-import { PageTitle } from '../../../common/page-title/page-title';
+import { PageTitle } from '../../../common/components/page-title/page-title';
 
 @Component({
-  imports: [CommonTable, FormsModule, RouterLink, Error, PageTitle],
+  imports: [Table, FormsModule, RouterLink, Error, PageTitle],
   providers: [DatePipe],
   selector: 'app-program-list',
   styleUrl: './program-list.css',
@@ -27,17 +27,16 @@ export class ProgramList implements OnInit {
   private router = inject(Router);
 
   tableColumns: TableColumn[] = [
-    { key: 'name', label: 'Program Day', sortable: true, filterable: true },
-    { key: 'completionCount', label: 'Workouts Done', sortable: true, filterable: true },
-    { key: 'createdAt', label: 'Date Created', sortable: true, filterable: true, transform: (value) => this.datePipe.transform(value, 'mediumDate') || '' }
+    { key: 'name', label: 'Program Day' },
+    { key: 'workoutCount', label: 'Workouts Done' },
+    { key: 'createdAt', label: 'Date Created', transform: (value) => this.datePipe.transform(value, 'mediumDate') || '' }
   ];
 
   errors: string[] = [];
 
   newProgram: Program = {
     name: '',
-    programDays: [],
-    programLength: 0,
+    days: [],
     createdAt: new Date(),
     updatedAt: new Date()
   }
@@ -45,7 +44,7 @@ export class ProgramList implements OnInit {
   newWorkout: Workout = {
     programDayId: '',
     name: '',
-    sets: [],
+    exercises: [],
     notes: '',
     createdAt: new Date(),
     updatedAt: new Date()
@@ -62,6 +61,7 @@ export class ProgramList implements OnInit {
       next: (response: ApiResponse<Program[]>) => {
         if (response.data) {
           this.programs = response.data;
+          console.log(this.programs)
           this.changeDetectorRef.detectChanges();
         }
       },
@@ -91,37 +91,21 @@ export class ProgramList implements OnInit {
     });
   }
 
-  startWorkout(rowItem: any): void {
+  startWorkout(programId: string, rowItem: any): void {
     this.newWorkout = {
       programDayId: rowItem._id,
-      name: 'Week ' + rowItem.completionCount + ': ' + rowItem.name,
-      sets: rowItem.programSets.map((programSet: any) => programSet.liftingSet),
+      name: `${rowItem.name}`,
+      exercises: rowItem.exercises,
       notes: '',
       createdAt: new Date(),
       updatedAt: new Date()
     };
     console.log('Starting workout for program day:', this.newWorkout);
-    this.createNewWorkout();
-    //this.increaseProgramDayCompletionCount(rowItem);
+    this.createNewWorkout(programId);
   }
 
-  // increaseProgramDayCompletionCount(rowItem: any) {
-  //   rowItem.completionCount += 1;
-  //   this.programService.updateProgramDay(rowItem._id).subscribe({
-  //     next: (data: any) => {
-  //       console.log('Program day completion count increased:', data);
-  //       this.changeDetectorRef.detectChanges();
-  //     },
-  //     error: (err) => {
-  //       console.error('Could not update program day completion count on Express server:', err);
-  //          this.errors = [err.error.message];
-   //         this.changeDetectorRef.detectChanges();
-  //     }
-  //   });
-  // }
-
-  createNewWorkout(): void {
-    this.workoutService.addWorkout(this.newWorkout).subscribe({
+  createNewWorkout(programId: string): void {
+    this.workoutService.createWorkout(this.newWorkout, programId).subscribe({
       next: (response: ApiResponse<Workout>) => {
         if (response.data) {
           console.log(response);
@@ -136,7 +120,26 @@ export class ProgramList implements OnInit {
         this.changeDetectorRef.detectChanges();
       }
 
-    })
+    });
   }
 
+  increaseWorkoutCount(programId: string, programDay: ProgramDay) {
+    if (!programDay.workoutCount || programDay.workoutCount === undefined) {
+      programDay.workoutCount = 0;
+    }
+    programDay.workoutCount++;
+
+    console.log(programDay)
+    this.programService.updateProgramDay(programId, programDay).subscribe({
+      next: (response: ApiResponse<ProgramDay>) => {
+        this.loadPrograms();
+        this.changeDetectorRef.detectChanges();
+      },
+      error: (err) => {
+        this.errors = [err.error.message];
+        console.error('Could not update workout count on Express server:', err);
+        this.changeDetectorRef.detectChanges();
+      }
+    })
+  }
 }
