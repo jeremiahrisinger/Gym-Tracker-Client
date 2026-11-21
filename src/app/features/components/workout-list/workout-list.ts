@@ -9,6 +9,7 @@ import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ApiResponse } from '../../../core/models/api-response';
 import { Input } from '../../../common/components/input/input';
+import { Exercise } from '../../models/exercise';
 
 
 @Component({
@@ -35,7 +36,7 @@ export class WorkoutList implements OnInit {
 
   tableColumns: TableColumn[] = [
     { key: 'name', label: 'Workout Name' },
-    { key: 'date', label: 'Date' }
+    { key: 'exercises', label: 'Exercies', asList: true, transform: (value) => this.getExercisesAsString(value) }
   ];
 
   ngOnInit(): void {
@@ -96,4 +97,38 @@ export class WorkoutList implements OnInit {
       }
     });
   }
+
+  getExercisesAsString(exercises: Exercise[]): string[] {
+    var ret: string[] = [];
+    var str = '';
+    exercises.forEach(e => {
+      var reps = e.sets.map(s => (s.target?.reps! | s.actual?.reps!)).sort((a, b) => a - b);
+      var weights = e.sets.map(s => (s.target?.weight! | s.actual?.weight!)).sort((a, b) => a - b);
+      var weightStr = this.rangeToString(weights[0], weights[weights.length - 1]);
+
+      str = `${e.name}`;
+      if (e.sets.length !== 0) {
+        str += ` - ${e.sets.length} x `
+          + this.rangeToString(reps[0], reps[reps.length - 1]);
+      }
+
+      if (weightStr !== '0') {
+        str += ` @ `
+          + weightStr
+          + `lbs`;
+      }
+      ret.push(str);
+    });
+
+    return ret;
+  }
+
+  rangeToString(num: number, num2: number): string {
+    if (num === num2) {
+      return `${num | 0}`
+    } else {
+      return `${num | 0} - ${num2 | 0}`
+    }
+  }
 }
+
