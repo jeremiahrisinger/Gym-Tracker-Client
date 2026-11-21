@@ -3,8 +3,9 @@ export interface TableColumn {
   label: string;
   help?: string;
   useMatIcon?: boolean,
+  asList?: boolean,
   sortable?: boolean;
   filterable?: boolean;
   width?: string;
-  transform?: (value: any) => string;
+  transform?: (value: any) => string | string[];
 }

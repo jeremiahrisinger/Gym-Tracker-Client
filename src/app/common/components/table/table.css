@@ -1,7 +1,8 @@
-h3{
+h3 {
     color: var(--text-color-medium);
     font-size: 1.2rem;
 }
+
 .table-responsive {
     width: 100%;
     overflow-x: auto;
@@ -25,6 +26,7 @@ h3{
     text-align: center;
     text-wrap: nowrap;
 }
+
 .common-table th.button {
     background-color: #333;
     color: var(--text-color);
@@ -40,6 +42,9 @@ h3{
     padding: 14px 16px;
     color: var(--text-color);
     text-align: center;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
 }
 
 .common-table td.button {
@@ -61,7 +66,7 @@ h3{
 }
 
 .common-table tbody tr:hover {
-    background-color:#555;
+    background-color: #555;
 }
 
 .scrollable {

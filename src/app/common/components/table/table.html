@@ -55,21 +55,35 @@
       <tr>
         @for (col of columns(); track $index) {
         <!-- Uses index-signature access to read values dynamically -->
+        @if (col.transform) {
         <td>
-          @if (col.transform) {
           @if(col.useMatIcon){
           <mat-icon>{{ col.transform(row[col.key]) }}</mat-icon>
+          } @else if (col.asList) {
+            @for (i of col.transform(row[col.key]); track $index) {
+            <p>{{i}}</p>
+            }
           } @else {
           {{ col.transform(row[col.key]) }}
           }
-          } @else {
+        </td>
+        } @else {
+        <td>
           @if(col.useMatIcon){
           <mat-icon>{{ row[col.key] }}</mat-icon>
-          } @else {
+          }
+          @else if (col.asList) {
+          <ul>
+            @for (i of row[col.key]; track $index) {
+            <li>i</li>
+            }
+          </ul>
+          }
+          @else {
           {{ row[col.key] }}
           }
-          }
         </td>
+        }
         }
         @if(this.includeEditButton() && columns().length > 0) {
         <td class="button">
